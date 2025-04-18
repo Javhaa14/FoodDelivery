@@ -1,20 +1,13 @@
 import { Ordermodel } from "../model/order.js";
-import { Foodmodel } from "../model/food.js";
 
 export const createOrder = async (req, res) => {
-  const { userid, items } = req.body;
-
-  let foodnames = items.split(",");
+  const { userid, foodorderitems, totalPrice } = req.body;
 
   try {
-    const foods = await Foodmodel.find({ name: { $in: foodnames } });
-
-    const totalPrice = foods.reduce((sum, food) => sum + food.price, 0);
-
     const order = await Ordermodel.create({
       user: userid,
-      totalPrice,
-      foodorderitems: foodnames,
+      foodorderitems: foodorderitems,
+      totalPrice: totalPrice,
     });
 
     res.status(200).send({
@@ -30,78 +23,73 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// export const getOrders = async (_, res) => {
-//   try {
-//     const users = await Usermodel.find();
-//     res.status(200).send(users);
-//   } catch (error) {
-//     console.log(error, "ERROOR");
-//     res
-//       .status(400)
-//       .send({
-//         success: false,
-//         message: error.message,
-//       })
-//       .end();
-//   }
-// };
+export const getAllOrders = async (_, res) => {
+  try {
+    const Allorders = await Ordermodel.find();
+    res.status(200).send(Allorders);
+  } catch (error) {
+    console.log(error, "ERROOR");
+    res
+      .status(400)
+      .send({
+        success: false,
+        message: error.message,
+      })
+      .end();
+  }
+};
 
-// export const getOrderById = async (req, res) => {
-//   const { id } = req.params;
-//   const user = await Usermodel.findById(id);
+export const getOrderByUserId = async (req, res) => {
+  const { id } = req.params;
+  const orderbyuserid = await Ordermodel.find({ user: id }).populate("user");
+  if (!orderbyuserid) {
+    return res.status(404).send({
+      success: false,
+      message: "User not found.",
+    });
+  }
+  return res.status(200).send({ orderbyuserid: orderbyuserid });
+};
 
-//   if (!user) {
-//     return res.status(404).send({
-//       success: false,
-//       message: "User not found.",
-//     });
-//   }
+export const deleteOrder = async (req, res) => {
+  const { id } = req.body;
+  const orders = await Ordermodel.findByIdAndDelete(id);
+  if (!orders) {
+    return res.status(404).send({
+      success: false,
+      message: "Order not found.",
+    });
+  }
+  res.status(200).send({
+    success: true,
+    message: "Amjilttai ustsan",
+  });
+};
+export const updateOrder = async (req, res) => {
+  const { orderid } = req.params;
+  const { foodorderitems, totalPrice } = req.body;
 
-//   return res.status(200).send({ user: user });
-// };
-// export const deleteOrder = async (req, res) => {
-//   const { id } = req.body;
-//   const users = await Usermodel.findByIdAndDelete(id);
-//   res.status(200).send({
-//     success: true,
-//     message: "Amjilttai ustsan",
-//   });
-//   if (!users) {
-//     return res.status(404).send({
-//       success: false,
-//       message: "User not found.",
-//     });
-//   }
-// };
-// export const updateOrder = async (req, res) => {
-//   const { id, password, email, phoneNumber, address } = req.body;
-
-//   try {
-//     const user = await Usermodel.findById(id);
-//     if (!user) {
-//       return res.status(404).send({
-//         success: false,
-//         message: "User not found.",
-//       });
-//     }
-
-//     if (password !== undefined) user.password = password;
-//     if (email !== undefined) user.email = email;
-//     if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
-//     if (address !== undefined) user.address = address;
-
-//     await user.save();
-
-//     return res.status(200).send({
-//       success: true,
-//       message: "User updated successfully.",
-//       user,
-//     });
-//   } catch (error) {
-//     console.log(error, "UPDATE ERROR");
-//     return res.status(400).send({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+  try {
+    const order = await Ordermodel.findById(orderid);
+    if (!order) {
+      return res.status(404).send({
+        success: false,
+        message: "Order not found.",
+      });
+    }
+    if (foodorderitems !== undefined) order.foodorderitems = foodorderitems;
+    if (totalPrice !== undefined) order.totalPrice = totalPrice;
+    await order.save();
+    return res.status(200).send({
+      success: true,
+      message: "Order updated successfully.",
+      order,
+    });
+  } catch (error) {
+    console.log(error, "UPDATE ERROR");
+    return res.status(400).send({
+      success: false,
+      message: error.message,
+    });
+  }
+};

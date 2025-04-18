@@ -1,11 +1,25 @@
 import mongoose, { Schema } from "mongoose";
 
+const foodorderitems = new mongoose.Schema({
+  food: {
+    type: Schema.Types.ObjectId,
+    ref: "Foods",
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
+
 const orderschema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
-  totalPrice: Number,
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
   foodorderitems: [foodorderitems],
   status: {
     type: String,
@@ -22,15 +36,5 @@ const orderschema = new mongoose.Schema({
     default: Date.now,
   },
 });
-export const foodorderitems = new mongoose.Schema({
-  food: {
-    type: Schema.Types.ObjectId,
-    ref: "foodorderitems",
-  },
-  quantity: Number,
-});
-// export const foodorderitemsmodel = mongoose.model(
-//   "Foodorderitems",
-//   foodorderitems
-// );
+
 export const Ordermodel = mongoose.model("Orders", orderschema);
