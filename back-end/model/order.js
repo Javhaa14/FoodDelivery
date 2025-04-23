@@ -5,6 +5,7 @@ const foodorderitems = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Foods",
   },
+  price: Number,
   quantity: {
     type: Number,
     required: true,

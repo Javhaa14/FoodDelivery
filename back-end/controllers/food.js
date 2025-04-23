@@ -54,14 +54,14 @@ export const getFoodById = async (req, res) => {
         .status(404)
         .send({ success: false, message: "Food not found." });
     }
-    return res.status(200).send({ success: true, food });
+    return res.status(200).send(food);
   } catch (error) {
     res.status(400).send({ success: false, message: error.message });
   }
 };
 
 export const deleteFood = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     const food = await Foodmodel.findByIdAndDelete(id);
     if (!food) {
@@ -76,7 +76,8 @@ export const deleteFood = async (req, res) => {
 };
 
 export const updateFood = async (req, res) => {
-  const { id, name, ingredients, price, image, category } = req.body;
+  const { id } = req.params;
+  const { name, ingredients, price, image, category } = req.body;
 
   try {
     const food = await Foodmodel.findById(id);
