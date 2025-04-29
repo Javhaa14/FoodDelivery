@@ -54,8 +54,8 @@ export const getUsers = async (_, res) => {
 };
 
 export const getUserById = async (req, res) => {
-  const { id } = req.params;
-  const user = await Usermodel.findById(id);
+  const { userData } = req.body;
+  const user = await Usermodel.findById(userData._id);
 
   if (!user) {
     return res.status(404).send({
@@ -64,7 +64,7 @@ export const getUserById = async (req, res) => {
     });
   }
 
-  return res.status(200).send({ user: user });
+  return res.status(200).send(user);
 };
 export const deleteUser = async (req, res) => {
   const { id } = req.body;
@@ -81,10 +81,10 @@ export const deleteUser = async (req, res) => {
   }
 };
 export const updateUser = async (req, res) => {
-  const { id, password, email, phoneNumber, address } = req.body;
+  const { id, password, email, phoneNumber, address, userData } = req.body;
 
   try {
-    const user = await Usermodel.findById(id);
+    const user = await Usermodel.findById(userData._id);
     if (!user) {
       return res.status(404).send({
         success: false,

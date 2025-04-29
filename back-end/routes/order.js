@@ -6,11 +6,12 @@ import {
   updateOrder,
 } from "../controllers/order.js";
 import express from "express";
+import { verifytoken } from "../middleware/auth.js";
 export const orderRouter = express.Router();
 
 orderRouter
-  .post("/", createOrder)
-  .get("/:id", getOrderByUserId)
+  .post("/", verifytoken, createOrder)
+  .get("/byid", verifytoken, getOrderByUserId)
   .get("/", getAllOrders)
-  .delete("/cancel", deleteOrder)
+  .delete("/cancel", verifytoken, deleteOrder)
   .put("/:orderid", updateOrder);

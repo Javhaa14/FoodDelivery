@@ -1,3 +1,4 @@
+import { Categorymodel } from "../model/category.js";
 import { Foodmodel } from "../model/food.js";
 
 export const addFood = async (req, res) => {
@@ -44,6 +45,30 @@ export const getFoodsByCatId = async (req, res) => {
     res.status(400).send({ success: false, message: error.message });
   }
 };
+// export const getFoodsByCatId = async (_, res) => {
+//   console.log("working");
+//   try {
+//     const foods = await Categorymodel.aggregate([
+//       {
+//         $lookup: {
+//           from: "foods",
+//           localField: "_id",
+//           foreignField: "category",
+//           as: "foods",
+//         },
+//       },
+//       {
+//         $project: {
+//           categoryName: 1,
+//           foods: 1,
+//         },
+//       },
+//     ]);
+//     res.status(200).send(foods);
+//   } catch (error) {
+//     res.status(400).send({ success: false, message: error.message });
+//   }
+// };
 
 export const getFoodById = async (req, res) => {
   const { id } = req.params;

@@ -19,7 +19,7 @@ app.use("/user", userRouter);
 app.use("/category", categoryRouter);
 app.use("/food", foodRouter);
 app.use("/order", orderRouter);
-app.use("/auth", authRouter);
+app.use("/login", authRouter);
 
 app.listen(port, () => {
   console.log(`App running at http://localhost:${port}/`);

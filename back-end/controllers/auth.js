@@ -1,6 +1,8 @@
 import { Usermodel } from "../model/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+const secret = process.env.SECRET_KEY;
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -9,20 +11,22 @@ export const login = async (req, res) => {
     console.log(password, user.password);
     const pass = await bcrypt.compare(password, user.password);
     console.log(pass, "pass");
-    if (pass) {
-      return res.status(200).send({
-        success: "True",
-        message: "success",
-      });
-    } else {
+    if (!pass) {
       return res.status(404).send({
         success: "false",
         message: "Email or Password wrong",
       });
     }
+
+    const token = jwt.sign({ ...user }, secret, { expiresIn: 3600 });
+
+    return res.status(200).send({
+      success: "True",
+      message: "success",
+      token,
+    });
   } catch (error) {
     console.log(error);
-
     res.status(404).send({
       success: "false",
     });

@@ -3,7 +3,7 @@ import { Ordermodel } from "../model/order.js";
 export const createOrder = async (req, res) => {
   try {
     const order = await Ordermodel.create({
-      user: req.body.userid,
+      user: req.body.userData._id,
       foodorderitems: req.body.foodorderitems.map((item) => ({
         food: item.food,
         price: item.price,
@@ -16,8 +16,8 @@ export const createOrder = async (req, res) => {
       .populate("user")
       .populate({
         path: "foodorderitems.food",
-        model: "Foods", // Explicitly declare model
-        select: "name price image", // Only get needed fields
+        model: "Foods",
+        select: "name price image",
       });
 
     res.status(200).json({
@@ -34,7 +34,15 @@ export const createOrder = async (req, res) => {
 
 export const getAllOrders = async (_, res) => {
   try {
-    const Allorders = await Ordermodel.find();
+    const Allorders = await Ordermodel.find()
+      .populate({
+        path: "user",
+        select: "email address",
+      })
+      .populate({
+        path: "foodorderitems.food",
+        select: "name image",
+      });
     res.status(200).send(Allorders);
   } catch (error) {
     console.log(error, "ERROOR");
@@ -49,16 +57,16 @@ export const getAllOrders = async (_, res) => {
 };
 
 export const getOrderByUserId = async (req, res) => {
-  const { id } = req.params;
+  const { userData } = req.body;
   try {
-    const orderbyuserid = await Ordermodel.find({ user: id })
+    const orderbyuserid = await Ordermodel.find({ user: userData._id })
       .populate({
         path: "user",
-        select: "email phoneNumber address", // Only include needed fields
+        select: "email address",
       })
       .populate({
         path: "foodorderitems.food",
-        select: "name", // Only include needed fields
+        select: "name",
       });
 
     if (!orderbyuserid || orderbyuserid.length === 0) {
@@ -93,7 +101,7 @@ export const deleteOrder = async (req, res) => {
 };
 export const updateOrder = async (req, res) => {
   const { orderid } = req.params;
-  const { foodorderitems, totalPrice } = req.body;
+  const { status } = req.body;
 
   try {
     const order = await Ordermodel.findById(orderid);
@@ -103,8 +111,7 @@ export const updateOrder = async (req, res) => {
         message: "Order not found.",
       });
     }
-    if (foodorderitems !== undefined) order.foodorderitems = foodorderitems;
-    if (totalPrice !== undefined) order.totalPrice = totalPrice;
+    if (status !== undefined) order.status = status;
     await order.save();
     return res.status(200).send({
       success: true,
