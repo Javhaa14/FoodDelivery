@@ -14,10 +14,7 @@ const userschema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  address: {
-    type: String,
-    required: true,
-  },
+  address: String,
   isVerified: Boolean,
   role: {
     type: String,

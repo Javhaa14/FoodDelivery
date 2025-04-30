@@ -1,4 +1,5 @@
 "use client";
+import Cookies from "js-cookie";
 
 import axios from "axios";
 import {
@@ -36,6 +37,7 @@ export const Menu = ({
 }) => {
   const [foods, setFoods] = useState<Food[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const isLoggedIn = Cookies.get("Loggedin") === "true";
 
   const fetchFoods = async () => {
     const res = await axios.get(
@@ -55,34 +57,49 @@ export const Menu = ({
   }, []);
 
   const addOrder = (foodId: string, price: number) => {
-    const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-    const existingIndex = storedOrders.findIndex(
-      (o: Order) => o.foodId === foodId
-    );
+    if (isLoggedIn == true) {
+      const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const existingIndex = storedOrders.findIndex(
+        (o: Order) => o.foodId === foodId
+      );
 
-    let updatedOrders;
-    if (existingIndex !== -1) {
-      storedOrders[existingIndex].quantity += 1;
-      updatedOrders = [...storedOrders];
+      let updatedOrders;
+      if (existingIndex !== -1) {
+        storedOrders[existingIndex].quantity += 1;
+        updatedOrders = [...storedOrders];
+      } else {
+        updatedOrders = [...storedOrders, { foodId, price, quantity: 1 }];
+      }
+
+      localStorage.setItem("orders", JSON.stringify(updatedOrders));
+      setOrders(updatedOrders);
+
+      const currentCount = parseInt(
+        localStorage.getItem("cartCount") || "0",
+        10
+      );
+      localStorage.setItem("cartCount", (currentCount + 1).toString());
+      toast.custom((t) => (
+        <div
+          className={`w-[320px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
+          <Check className="size-4 text-white" />
+          <span className="text-[16px] font-medium text-[#FAFAFA]">
+            Food is being added to the cart!
+          </span>
+        </div>
+      ));
+      window.dispatchEvent(new Event("cartUpdated"));
     } else {
-      updatedOrders = [...storedOrders, { foodId, price, quantity: 1 }];
+      toast.custom((t) => (
+        <div
+          className={`max-w-[320px] w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
+          <Check className="size-4 text-white" />
+          <span className="text-[16px] font-medium text-[#FAFAFA]">
+            Please Login First!
+          </span>
+        </div>
+      ));
     }
-
-    localStorage.setItem("orders", JSON.stringify(updatedOrders));
-    setOrders(updatedOrders);
-
-    const currentCount = parseInt(localStorage.getItem("cartCount") || "0", 10);
-    localStorage.setItem("cartCount", (currentCount + 1).toString());
-    toast.custom((t) => (
-      <div
-        className={`w-[320px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
-        <Check className="size-4 text-white" />
-        <span className="text-[16px] font-medium text-[#FAFAFA]">
-          Food is being added to the cart!
-        </span>
-      </div>
-    ));
-    window.dispatchEvent(new Event("cartUpdated"));
   };
 
   return (

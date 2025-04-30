@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+import Cookies from "js-cookie";
+
 import { IoIosArrowBack } from "react-icons/io";
 import { Step3 } from "../components/step3";
 import { useState } from "react";
@@ -52,6 +54,7 @@ export default function Home() {
       }
     );
     localStorage.setItem("token", response.data.token);
+    Cookies.set("Loggedin", "true", { expires: 7 });
     router.push("/");
   };
 
@@ -87,7 +90,7 @@ export default function Home() {
           } items-center gap-3 self-stretch`}>
           <button
             onClick={handleonclick}
-            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-[#d1d1d1] text-[#FAFAFA]">
+            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-[#d1d1d1] hover:bg-black text-[#FAFAFA]">
             Let's Go
           </button>
         </div>
