@@ -37,43 +37,76 @@ export default function Home() {
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [errmes, setErrmes] = useState("");
+
   const inputhandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
   const inputpashandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPass(event.target.value);
   };
-  console.log(email, "email");
-  console.log(pass, "pass");
   const handleonclick = async () => {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/login`,
-      {
-        email: email,
-        password: pass,
+    if (email == "" && pass == "") {
+      setErrmes("Имэйл эсвэл нууц үгээ бүрэн оруулна уу");
+    } else if (email == "") {
+      setErrmes("Имэйлээ бүрэн оруулна уу");
+    } else if (pass == "") {
+      setErrmes("Нууц үгээ бүрэн оруулна уу");
+    } else {
+      setErrmes("");
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/login`,
+          {
+            email: email,
+            password: pass,
+          }
+        );
+        localStorage.setItem("token", response.data.token);
+        Cookies.set("Loggedin", "true", { expires: 7 });
+        router.push("/");
+      } catch (error: any) {
+        if (error.response) {
+          setErrmes(error.response.data.message);
+        }
       }
-    );
-    localStorage.setItem("token", response.data.token);
-    Cookies.set("Loggedin", "true", { expires: 7 });
-    router.push("/");
+    }
   };
-
+  const handlesign = () => {
+    console.log("hi");
+    router.push("/signin");
+  };
+  const forgot = () => {
+    setStep(4);
+  };
+  const goback = () => {
+    setStep(step - 1);
+  };
   return (
     <div className="flex pb-[110px] w-full h-full justify-center items-center ">
       <div className="flex flex-col justify-center items-start gap-6 p-10">
-        <div className="flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white">
-          <IoIosArrowBack className="text-black" />
-        </div>
+        {step > 3 && (
+          <div
+            onClick={goback}
+            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white"
+          >
+            <IoIosArrowBack className="text-black" />
+          </div>
+        )}
 
         {/* Step 3 */}
-        <Step3
-          name={blah[0].name}
-          down={blah[0].down}
-          input={inputhandler}
-          inputpas={inputpashandler}
-          email={email}
-          pass={pass}
-        />
+        {step === 3 && (
+          <Step3
+            err={errmes}
+            name={blah[0].name}
+            down={blah[0].down}
+            input={inputhandler}
+            inputpas={inputpashandler}
+            email={email}
+            pass={pass}
+            forgot={forgot}
+          />
+        )}
 
         {/* Step 4 */}
         {step === 4 && <Step4 name={blah[1].name} down={blah[1].down} />}
@@ -87,18 +120,25 @@ export default function Home() {
         <div
           className={`${
             step === 3 ? "flex" : "hidden"
-          } items-center gap-3 self-stretch`}>
+          } items-center gap-3 self-stretch`}
+        >
           <button
             onClick={handleonclick}
-            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-[#d1d1d1] hover:bg-black text-[#FAFAFA]">
+            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
+          >
             Let's Go
           </button>
         </div>
 
         {(step === 3 || step === 4) && (
           <div className="flex justify-center gap-3 self-stretch text-[16px]">
-            <p className="text-[#71717A]">Don't have an account?</p>
-            <p className="text-[#2563EB]">Sign up</p>
+            <p className="text-[#71717A]">Бүртгэлгүй юу?</p>
+            <p
+              onClick={handlesign}
+              className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer"
+            >
+              Бүртгүүлэх
+            </p>
           </div>
         )}
       </div>

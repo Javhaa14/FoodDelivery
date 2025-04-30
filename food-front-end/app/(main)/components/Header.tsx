@@ -142,7 +142,8 @@ export const Header = ({}) => {
         );
         toast.custom((t) => (
           <div
-            className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+          >
             <Check className="size-4 text-white" />
             <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
               Хүргэлтийн хаяг амжилттай бүртгэгдлээ!
@@ -152,7 +153,8 @@ export const Header = ({}) => {
       } else {
         toast.custom((t) => (
           <div
-            className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+          >
             <X className="size-4 text-white" />
             <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
               Хүргэлтийн хаягаа оруулна уу?
@@ -204,7 +206,8 @@ export const Header = ({}) => {
     if (transformedOrders.length === 0) {
       toast.custom((t) => (
         <div
-          className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+          className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+        >
           <X className="size-4 text-white" />
           <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
             Таны сагс хоосон байна!
@@ -273,14 +276,15 @@ export const Header = ({}) => {
     window.location.reload();
   };
   return (
-    <div className="flex w-full px-[88px] py-3 justify-between items-center bg-[#18181B] fixed z-50">
+    <div className="flex w-full px-[88px] py-3 justify-between left-0 items-center bg-[#18181B] fixed z-50">
       <div className="flex items-center gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="46"
           height="38"
           viewBox="0 0 46 38"
-          fill="none">
+          fill="none"
+        >
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -344,7 +348,8 @@ export const Header = ({}) => {
                   <DialogClose asChild>
                     <button
                       onClick={z}
-                      className=" cursor-pointer ml-4 flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-[#18181B] text-white hover:bg-[#4a4a4a]">
+                      className=" cursor-pointer ml-4 flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-[#18181B] text-white hover:bg-[#4a4a4a]"
+                    >
                       Deliver Here
                     </button>
                   </DialogClose>
@@ -383,7 +388,7 @@ export const Header = ({}) => {
                   <ShoppingCart className="text-black size-4" />
                 </div>
               </SheetTrigger>
-              <SheetContent className="bg-[#404040] flex w-[535px] px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg">
+              <SheetContent className="bg-[#404040] overflow-scroll flex w-[535px] px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg">
                 <SheetHeader className="gap-8">
                   <SheetTitle className="text-white flex felx-col items-center gap-3">
                     <ShoppingCart className="size-4" />
@@ -394,12 +399,14 @@ export const Header = ({}) => {
                       <TabsList className="w-full flex p-1 items-center gap-2 rounded-full bg-white">
                         <TabsTrigger
                           className="cursor-pointer flex py-1 px-2 justify-center items-center rounded-full bg-white text-black"
-                          value="Cart">
+                          value="Cart"
+                        >
                           Cart
                         </TabsTrigger>
                         <TabsTrigger
                           className="cursor-pointer flex py-1 px-2 justify-center items-center rounded-full bg-white text-black"
-                          value="Order">
+                          value="Order"
+                        >
                           Orders
                         </TabsTrigger>
                       </TabsList>
@@ -438,7 +445,8 @@ export const Header = ({}) => {
                       </TabsContent>
                       <TabsContent
                         className="flex flex-col gap-8"
-                        value="Order">
+                        value="Order"
+                      >
                         <div className="flex w-[479px]  p-4 flex-col items-start gap-4 rounded-[20px] bg-white">
                           <div className="flex overflow-y-scroll max-h-[808px] flex-col h-full justify-between items-start gap-5">
                             {checked.length > 0 ? (
@@ -477,7 +485,8 @@ export const Header = ({}) => {
                                     width="61"
                                     height="50"
                                     viewBox="0 0 61 50"
-                                    fill="none">
+                                    fill="none"
+                                  >
                                     <path
                                       fillRule="evenodd"
                                       clipRule="evenodd"
@@ -533,7 +542,8 @@ export const Header = ({}) => {
                 onClick={() => {
                   handleon(v.path);
                 }}
-                className={`cursor-pointer flex h-9 py-2 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}>
+                className={`cursor-pointer flex h-9 py-2 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}
+              >
                 {v.name}
               </button>
             );

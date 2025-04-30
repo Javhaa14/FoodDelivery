@@ -122,13 +122,17 @@ export default function Home() {
     setStep(1);
     setPassmes("");
   };
+  const handlesign = () => {
+    router.push("/login");
+  };
   return (
     <div className="w-full h-full justify-center items-center flex pb-[110px]">
       <div className="flex flex-col justify-center items-start gap-6 p-10">
         {step == 2 && (
           <div
             onClick={goback}
-            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white">
+            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white"
+          >
             <IoIosArrowBack className="text-black" />
           </div>
         )}
@@ -155,15 +159,19 @@ export default function Home() {
         <div className="flex w-full items-center gap-3 self-stretch">
           <button
             onClick={handle}
-            className="cursor-pointer flex w-full h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-[#18181B] text-[#FAFAFA]">
+            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
+          >
             Let's Go
           </button>
         </div>
         <div className="flex justify-center gap-3 self-stretch text-[16px]">
           <p className="text-[#71717A] ">Already have an account?</p>
-          <a href="http://localhost:3000/login" className="text-[#2563EB]">
-            Log in{" "}
-          </a>
+          <p
+            onClick={handlesign}
+            className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer"
+          >
+            Log in
+          </p>
         </div>
       </div>
       <Toaster position="top-center" />

@@ -12,7 +12,7 @@ export const Step1 = ({
   error: string;
 }) => {
   return (
-    <div className="flex w-[416px] flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
       <div className="flex flex-col items-start gap-1 self-stretch text-[#09090B]">
         <h3 className="text-[24px] font-semibold">{name}</h3>
         <p className="text-4 text-[#71717A]">{down} </p>
@@ -25,7 +25,8 @@ export const Step1 = ({
             placeholder="Enter your email address"
             className={`flex w-full px-3 py-2 items-center self-stretch rounded-md ${
               error !== "" ? "border-[#EF4444]" : "border-[#E4E4E7]"
-            }  border-[1px] bg-white text-[#09090B]`}></input>
+            }  border-[1px] bg-white text-[#09090B]`}
+          ></input>
           <p className="text-[#EF4444] text-[14px]">
             {error}
             {error == "Invalid email address" &&

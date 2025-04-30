@@ -25,7 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} antialiased items-center w-screen h-screen flex flex-col  bg-[#404040]`}>
+      className={`${geistSans.variable} ${geistMono.variable} antialiased items-center w-screen h-screen flex flex-col bg-[#404040]`}
+    >
       <Header />
       {children}
       <Footer />

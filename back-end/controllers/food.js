@@ -27,10 +27,27 @@ export const addFood = async (req, res) => {
 
 export const getFoods = async (_, res) => {
   try {
-    const foods = await Foodmodel.find();
+    console.log("1. Starting getFoods...");
+
+    const foods = await Foodmodel.find().lean();
+    console.log("2. Query completed. Found", foods.length, "foods");
+    console.log("3. Sample food:", foods.length > 0 ? foods[0] : "No foods");
+
+    if (!foods.length) {
+      console.warn("4. WARNING: Empty food array returned");
+    }
+
     res.status(200).send(foods);
   } catch (error) {
-    res.status(400).send({ success: false, message: error.message });
+    console.error("5. ERROR in getFoods:", {
+      message: error.message,
+      stack: error.stack,
+    });
+    res.status(500).send({
+      error: "Internal Server Error",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
   }
 };
 
