@@ -68,7 +68,8 @@ function SheetContent({
             "data-[state=closed]:translate-y-full data-[state=open]:translate-y-0 bottom-0 inset-x-0 h-auto border-t",
           className
         )}
-        {...props}>
+        {...props}
+      >
         {children}
         <SheetPrimitive.Close className="cursor-pointer ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none">
           <XIcon className="size-5" />

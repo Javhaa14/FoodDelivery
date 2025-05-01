@@ -98,7 +98,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 export const updateUser = async (req, res) => {
-  const { id, password, email, phoneNumber, address, userData } = req.body;
+  const { password, email, phoneNumber, address, userData } = req.body;
 
   try {
     const user = await Usermodel.findById(userData._id);
@@ -124,6 +124,35 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     console.log(error, "UPDATE ERROR");
     return res.status(400).send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+export const resetUserpass = async (req, res) => {
+  const { password } = req.body;
+  const userData = req.user;
+  const hashed = await bcrypt.hash(password, 10);
+  try {
+    const user = await Usermodel.findById(userData.id);
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    if (password !== undefined) {
+      user.password = hashed;
+    }
+
+    await user.save();
+
+    return res.status(200).send({
+      success: true,
+      message: "User updated successfully.",
+      user,
+    });
+  } catch (error) {
+    console.log(error, "UPDATE ERROR");
+    return res.status(500).send({
       success: false,
       message: error.message,
     });

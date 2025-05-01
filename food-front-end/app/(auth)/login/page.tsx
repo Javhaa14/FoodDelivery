@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const [input, setInput] = useState("");
 
   const blah = [
     {
@@ -25,7 +26,7 @@ export default function Home() {
     },
     {
       name: "Please verify Your Email ",
-      down: "We just sent an email to Test@gmail.com. Click the link in the email to verify your account.",
+      down: `We just sent an email to "${input}". Click the link in the email to verify your account.`,
     },
     {
       name: "Create new password",
@@ -38,6 +39,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [errmes, setErrmes] = useState("");
+  const [existmes, setExistmes] = useState("");
 
   const inputhandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -82,6 +84,35 @@ export default function Home() {
   const goback = () => {
     setStep(step - 1);
   };
+
+  const sendlink = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user/check`,
+        {
+          email: input,
+        }
+      );
+      setExistmes("Хэрэглэгч байхгүй байна");
+      console.log(errmes);
+    } catch (error: any) {
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/login/mail`,
+          {
+            email: input,
+          }
+        );
+        setExistmes("");
+        setStep(5);
+      } catch (err) {
+        console.error("Can't send", err);
+      }
+    }
+  };
+  const inputhandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
   return (
     <div className="flex pb-[110px] w-full h-full justify-center items-center ">
       <div className="flex flex-col justify-center items-start gap-6 p-10">
@@ -109,13 +140,21 @@ export default function Home() {
         )}
 
         {/* Step 4 */}
-        {step === 4 && <Step4 name={blah[1].name} down={blah[1].down} />}
+        {step === 4 && (
+          <Step4
+            input={input}
+            inputhandle={inputhandle}
+            errmes={existmes}
+            sendlink={sendlink}
+            name={blah[1].name}
+            down={blah[1].down}
+          />
+        )}
 
         {/* Step 5 */}
-        {step === 5 && <Step5 name={blah[2].name} down={blah[2].down} />}
-
-        {/* Step 6 */}
-        {step === 6 && <Step6 name={blah[3].name} down={blah[3].down} />}
+        {step === 5 && (
+          <Step5 sendlink={sendlink} name={blah[2].name} down={blah[2].down} />
+        )}
 
         <div
           className={`${

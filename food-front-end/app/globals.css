@@ -19,7 +19,41 @@
     animation: ride 8s ease-in-out infinite;
   }
 }
+/* Sheet animations */
+.sheet-overlay {
+  @apply fixed inset-0 z-50 bg-black/50;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
 
+.sheet-overlay[data-state='open'] {
+  opacity: 1;
+}
+
+.sheet-content {
+  @apply fixed z-50 flex flex-col bg-background shadow-lg;
+  transition: transform 300ms ease;
+}
+
+/* Right side */
+.sheet-content-right {
+  @apply right-0 top-0 h-full w-full max-w-sm;
+  transform: translateX(100%);
+}
+
+.sheet-content-right[data-state='open'] {
+  transform: translateX(0);
+}
+
+/* Left side */
+.sheet-content-left {
+  @apply left-0 top-0 h-full w-full max-w-sm;
+  transform: translateX(-100%);
+}
+
+.sheet-content-left[data-state='open'] {
+  transform: translateX(0);
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;

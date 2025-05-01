@@ -1,9 +1,18 @@
 "use client";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Shee } from "./Shee";
+import { Sh } from "./Shee";
+import { useEffect, useState } from "react";
 
 export const Header = ({}) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [mounted, setMounted] = useState(false); // to avoid hydration issue
+
+  useEffect(() => {
+    setMounted(true);
+    const loggedIn = Cookies.get("Loggedin") === "true";
+    setIsLoggedIn(loggedIn);
+  }, []);
   const router = useRouter();
   const handleon = (path: string) => {
     router.push(`/${path}`);
@@ -12,7 +21,7 @@ export const Header = ({}) => {
     { name: "Sign up", path: "signin", color: "bg-[#f4f4f5] text-black" },
     { name: "Log in", path: "login", color: "bg-[#EF4444] text-white" },
   ];
-  const isLoggedIn = Cookies.get("Loggedin") === "true";
+  if (!mounted) return null;
   return (
     <div className="flex w-full px-[88px] py-3 justify-between left-0 items-center bg-[#18181B] fixed z-50">
       <div className="flex items-center gap-3">
@@ -21,7 +30,8 @@ export const Header = ({}) => {
           width="46"
           height="38"
           viewBox="0 0 46 38"
-          fill="none">
+          fill="none"
+        >
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -39,7 +49,7 @@ export const Header = ({}) => {
       </div>
       <div className={`flex items-center gap-3`}>
         {isLoggedIn ? (
-          <Shee />
+          <Sh />
         ) : (
           path.map((v) => {
             return (
@@ -48,7 +58,8 @@ export const Header = ({}) => {
                 onClick={() => {
                   handleon(v.path);
                 }}
-                className={`cursor-pointer flex h-9 py-2 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}>
+                className={`cursor-pointer flex h-9 py-2 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}
+              >
                 {v.name}
               </button>
             );

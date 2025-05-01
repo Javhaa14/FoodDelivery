@@ -3,11 +3,12 @@ import {
   deleteUser,
   getUserById,
   getUsers,
+  resetUserpass,
   updateUser,
   userCheck,
 } from "../controllers/user.js";
 import express from "express";
-import { verifytoken } from "../middleware/auth.js";
+import { resettoken, verifytoken } from "../middleware/auth.js";
 
 export const userRouter = express.Router();
 
@@ -17,4 +18,5 @@ userRouter
   .get("/byid", verifytoken, getUserById)
   .get("/", getUsers)
   .delete("/", deleteUser)
-  .put("/", verifytoken, updateUser);
+  .put("/", verifytoken, updateUser)
+  .put("/ress", resettoken, resetUserpass);
