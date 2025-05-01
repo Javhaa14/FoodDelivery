@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { Plus } from "lucide-react";
 import { Minus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Checkout } from "./Checkout";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Food = {
   _id: string;
@@ -106,27 +106,52 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
                 {food.ingredients}
               </p>
             </div>
-            <button
-              onClick={handledeleteorder}
-              className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full border-[1px] border-[#EF4444]">
-              <X className="text-[#EF4444] size-4" />
-            </button>
+            <motion.div
+              whileHover={{ scale: 1 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer"
+            >
+              {" "}
+              <button
+                onClick={handledeleteorder}
+                className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full border-[1px] border-[#EF4444] hover:bg-[#EF4444] text-[#EF4444] hover:text-white"
+              >
+                <X className="size-4" />
+              </button>
+            </motion.div>
           </div>
           <div className="flex w-[305px] justify-between items-center">
             <div className="flex justify-center items-center gap-3">
-              <div
-                className={`${
-                  quan <= 1 ? "opacity-[0.2] cursor-no-drop" : "cursor-pointer "
-                } flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white`}
-                onClick={handleDecrement}>
-                <Minus className="size-4" />
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer"
+              >
+                <div
+                  className={`${
+                    quan <= 1
+                      ? "opacity-[0.2] cursor-no-drop"
+                      : "cursor-pointer "
+                  } flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white`}
+                  onClick={handleDecrement}
+                >
+                  <Minus className="size-4" />
+                </div>
+              </motion.div>
+
               <p className="text-[18px] font-semibold">{quan}</p>
-              <div
-                className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white"
-                onClick={handleIncrement}>
-                <Plus className="size-4" />
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer"
+              >
+                <div
+                  className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white"
+                  onClick={handleIncrement}
+                >
+                  <Plus className="size-4" />
+                </div>
+              </motion.div>
             </div>
             <p className="w-[93px] text-[#09090B] text-[16px] font-bold">
               {food.price * quan}₮

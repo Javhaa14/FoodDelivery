@@ -1,5 +1,6 @@
 "use client";
 import Cookies from "js-cookie";
+import { motion, AnimatePresence } from "framer-motion";
 
 import axios from "axios";
 import {
@@ -112,13 +113,20 @@ export const Menu = ({
             <div key={val.name} className="relative flex justify-end items-end">
               <Dialog>
                 <DialogTrigger>
-                  <Foodcard
+                <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer"
+        >
+           <Foodcard
                     key={val.name}
                     name={val.name}
                     price={val.price}
                     ingredients={val.ingredients}
                     image={val.image}
                   />
+        </motion.div>
+                  
                 </DialogTrigger>
                 <DialogContent>
                   <DialogTitle>
@@ -134,13 +142,20 @@ export const Menu = ({
                   />
                 </DialogContent>
               </Dialog>
-              <button
+             
+              <motion.div
+          whileHover={{ scale: 1 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer absolute z-10"
+        >
+           <button
                 onClick={() => {
                   addOrder(val._id, val.price);
                 }}
-                className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full bg-white hover:bg-black mr-6 mb-35 absolute z-10">
-                <Plus className="text-[#EF4444] size-4" />
+                className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full bg-white hover:bg-red-500 text-[#EF4444] hover:text-white mr-6 mb-35 ">
+                <Plus className="size-4" />
               </button>
+        </motion.div>
             </div>
           );
         })}

@@ -50,7 +50,8 @@ export const Userorder = ({
             state === "PENDING" ? "border-[#EF4444]" : ""
           } ${state === "Cancelled" ? "border-[#E4E4E7]" : ""} ${
             state === "Delivered" ? "border-[#18ba5180]" : ""
-          } text-[#09090B] text-[12px] font-semibold`}>
+          } text-[#09090B] text-[12px] font-semibold`}
+        >
           {state}
         </div>
       </div>
@@ -59,10 +60,11 @@ export const Userorder = ({
         {foodname.map((val, index) => (
           <div
             key={index}
-            className="flex w-full justify-between items-center text-[#71717A] text-[12px]">
+            className="flex w-full justify-between items-center text-[#71717A] text-[12px]"
+          >
             <div className="flex gap-2 items-center">
               <Soup className="size-4" />
-              <p>{val.food.name}</p>
+              <p>{val.food?.name || "Food Deleted"}</p>
             </div>
             <p>x{val.quantity}</p>
           </div>

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Cookies from "js-cookie";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -7,9 +6,9 @@ import { Step3 } from "../components/step3";
 import { useState } from "react";
 import { Step4 } from "../components/step4";
 import { Step5 } from "../components/step5";
-import { Step6 } from "../components/step6";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const router = useRouter();
@@ -161,12 +160,18 @@ export default function Home() {
             step === 3 ? "flex" : "hidden"
           } items-center gap-3 self-stretch`}
         >
-          <button
-            onClick={handleonclick}
-            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer w-full"
           >
-            Let's Go
-          </button>
+            <button
+              onClick={handleonclick}
+              className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
+            >
+              Let's Go
+            </button>
+          </motion.div>
         </div>
 
         {(step === 3 || step === 4) && (

@@ -8,29 +8,17 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
+
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, MapPin } from "lucide-react";
 import { ChevronRight } from "lucide-react";
-import { ShoppingCart } from "lucide-react";
 import { User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { Toaster, toast } from "sonner";
-import { Cartempty } from "./Cartempty";
 import { Order } from "./Order";
-import { Checkout } from "./Checkout";
-import { Userorder } from "./Userorder";
+
 import { Dropmail } from "./Dropmail";
 import axios from "axios";
 import { CartSheet } from "./Cartsheet";
@@ -367,10 +355,22 @@ export const Sh = ({}: {}) => {
       </motion.div>
 
       {cartCount > 0 && (
-        <div className="flex size-5 flex-col justify-center items-center gap-[10px] absolute right-[142px] top-[9px] rounded-full bg-[#EF4444] text-[#FAFAFA] text-[13px]">
+        <motion.div
+          key={cartCount}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, -10, 10, -10, 10, 0],
+            opacity: 1,
+          }}
+          exit={{ scale: 0, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute top-2 right-37 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold z-50"
+        >
           {cartCount}
-        </div>
+        </motion.div>
       )}
+
       <Toaster position="top-center" />
     </div>
   );

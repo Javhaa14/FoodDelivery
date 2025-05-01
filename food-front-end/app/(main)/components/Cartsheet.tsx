@@ -14,7 +14,6 @@ import { Cartempty } from "./Cartempty";
 import { Order } from "./Order";
 import { Checkout } from "./Checkout";
 import { Userorder } from "./Userorder";
-import { useEffect, useState } from "react";
 
 interface CartSheetProps {
   open: boolean;
@@ -51,7 +50,6 @@ export const CartSheet: React.FC<CartSheetProps> = ({
         </motion.div>
       </SheetTrigger>
 
-      {/* AnimatePresence wrapped properly */}
       <AnimatePresence mode="popLayout">
         {open && (
           <motion.div
@@ -70,7 +68,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 300, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="bg-[#404040] overflow-scroll flex w-[535px] px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg"
+                className="bg-[#404040] overflow-scroll flex w-[535px] h-screen px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg"
               >
                 <SheetHeader className="gap-8">
                   <SheetTitle className="text-white flex flex-col items-center gap-3">

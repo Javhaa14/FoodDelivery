@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Sh } from "./Shee";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Header = ({}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,14 +14,16 @@ export const Header = ({}) => {
     const loggedIn = Cookies.get("Loggedin") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
-  const router = useRouter();
-  const handleon = (path: string) => {
-    router.push(`/${path}`);
-  };
   const path = [
     { name: "Sign up", path: "signin", color: "bg-[#f4f4f5] text-black" },
     { name: "Log in", path: "login", color: "bg-[#EF4444] text-white" },
   ];
+  const router = useRouter();
+  const handleon = (path: string) => {
+    console.log("Navigating to:", path);
+    router.push(`/${path}`);
+  };
+
   if (!mounted) return null;
   return (
     <div className="flex w-full px-[88px] py-3 justify-between left-0 items-center bg-[#18181B] fixed z-50">
@@ -53,15 +56,21 @@ export const Header = ({}) => {
         ) : (
           path.map((v) => {
             return (
-              <button
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer w-[80px] h-[40px]"
                 key={v.path}
-                onClick={() => {
-                  handleon(v.path);
-                }}
-                className={`cursor-pointer flex h-9 py-2 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}
               >
-                {v.name}
-              </button>
+                <button
+                  onClick={() => {
+                    handleon(v.path);
+                  }}
+                  className={`cursor-pointer flex h-9 py-3 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}
+                >
+                  {v.name}
+                </button>
+              </motion.div>
             );
           })
         )}

@@ -3,7 +3,7 @@ import { ChevronsUpDown } from "lucide-react";
 type FoodOrderItem = {
   _id: string;
   food: {
-    image: string;
+    image: string
     name: string;
   };
   quantity: number;
@@ -73,9 +73,10 @@ export const Order = ({
                   key={v._id}
                   className="flex items-center gap-[10px] self-stretch text-[#09090B] text-[12px] ">
                   <img
-                    src={v.food.image}
+                    src={v.food?.image||"No image"}
+                    alt="No image"
                     className="size-[32px] rounded-sm"></img>
-                  <p>{v.food.name}</p>
+                  <p>{v.food?.name||"Food Deleted"}</p>
                   <p>x{v.quantity}</p>
                 </div>
               );

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Menu } from "./Menu";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Category = {
   _id: string;
@@ -54,16 +55,23 @@ export const Categories = () => {
         </div>
         <div className="flex w-fit justify-center items-center gap-2">
           {categories?.map((val, index) => (
-            <button
-              onClick={() => handle(val, index)}
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer"
               key={val._id}
-              className={`cursor-pointer flex py-1 px-5 items-start gap-[10px] rounded-full ${
-                count === index
-                  ? "bg-red-500 text-white"
-                  : "bg-white text-black hover:bg-red-500"
-              }  transition-colors duration-200`}>
-              <p className="text-[17px]">{val.categoryName}</p>
-            </button>
+            >
+              <button
+                onClick={() => handle(val, index)}
+                className={`cursor-pointer flex py-1 px-5 items-start gap-[10px] rounded-full ${
+                  count === index
+                    ? "bg-red-500 text-white"
+                    : "bg-white text-black hover:bg-black hover:text-white"
+                }  transition-colors duration-200`}
+              >
+                <p className="text-[17px]">{val.categoryName}</p>
+              </button>
+            </motion.div>
           ))}
         </div>
         <div className="flex size-10 justify-center items-center gap-2">
