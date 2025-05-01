@@ -1,7 +1,7 @@
 import { Usermodel } from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { s } from "../utils/sendmail.js";
 const secret = process.env.SECRET_KEY;
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -28,5 +28,15 @@ export const login = async (req, res) => {
       success: "false",
       message: "Имэйл эсвэл нууц үг буруу байна!",
     });
+  }
+};
+
+export const sendmail = async (req, res) => {
+  const { email, subject, text } = req.body;
+  try {
+    const response = s(email, subject, text);
+    res.status(200).send({ success: "true", data: response });
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };

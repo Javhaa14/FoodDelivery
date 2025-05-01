@@ -1,4 +1,4 @@
 import express from "express";
-import { login } from "../controllers/auth.js";
+import { login, sendmail } from "../controllers/auth.js";
 export const authRouter = express.Router();
-authRouter.post("/", login);
+authRouter.post("/", login).get("/mail", sendmail);

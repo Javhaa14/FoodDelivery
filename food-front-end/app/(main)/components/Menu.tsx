@@ -103,10 +103,10 @@ export const Menu = ({
   };
 
   return (
-    <div className="flex w-[1264px] flex-col items-start gap-9 bg-[#404040] px-[68px]">
+    <div className="flex w-full flex-col items-start gap-9 bg-[#404040] px-[68px]">
       <Toaster position="top-center" />
       <p className="text-white text-[30px] font-semibold">{name}</p>
-      <div className="grid grid-cols-3 items-start gap-9 self-stretch">
+      <div className="flex flex-wrap items-start gap-9 self-stretch">
         {foods.map((val) => {
           return (
             <div key={val.name} className="relative flex justify-end items-end">

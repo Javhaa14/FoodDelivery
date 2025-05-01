@@ -60,8 +60,8 @@ export const Categories = () => {
               className={`cursor-pointer flex py-1 px-5 items-start gap-[10px] rounded-full ${
                 count === index
                   ? "bg-red-500 text-white"
-                  : "bg-white text-black hover:bg-gray-200"
-              } transition-colors duration-200`}>
+                  : "bg-white text-black hover:bg-red-500"
+              }  transition-colors duration-200`}>
               <p className="text-[17px]">{val.categoryName}</p>
             </button>
           ))}

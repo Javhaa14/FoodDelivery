@@ -1,5 +1,12 @@
+"use client";
+import { useRouter } from "next/navigation";
+
 export const Footer = ({}) => {
   const o = [1, 2, 3, 4, 5];
+  const router = useRouter();
+  const home = () => {
+    router.push("/");
+  };
   return (
     <div className="w-full flex flex-col items-center h-[755px]  bg-[#18181B] gap-[76px]">
       <div className="flex w-full h-[92px] py-7 px-[98px] items-center gap-[34px] bg-[#EF4444] text-white text-[20px] font-semibold mt-[60px] overflow-clip">
@@ -33,7 +40,9 @@ export const Footer = ({}) => {
         <div className="flex items-start gap-[112px]">
           <div className="flex w-[122px] flex-col items-start gap-4 text-[16px] text-white">
             <p className="text-[#71717A] ">YUMYUM</p>
-            <p>Home </p>
+            <p className="cursor-pointer" onClick={home}>
+              Home{" "}
+            </p>
             <p>Contact us</p>
             <p>Delivery zone</p>
           </div>

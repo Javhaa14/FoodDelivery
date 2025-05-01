@@ -6,9 +6,7 @@ import { Step2 } from "../components/step2";
 import { useState } from "react";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
-import { X } from "lucide-react";
 import * as Yup from "yup";
-import { error } from "console";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -131,8 +129,7 @@ export default function Home() {
         {step == 2 && (
           <div
             onClick={goback}
-            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white"
-          >
+            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white">
             <IoIosArrowBack className="text-black" />
           </div>
         )}
@@ -159,8 +156,7 @@ export default function Home() {
         <div className="flex w-full items-center gap-3 self-stretch">
           <button
             onClick={handle}
-            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
-          >
+            className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]">
             Let's Go
           </button>
         </div>
@@ -168,8 +164,7 @@ export default function Home() {
           <p className="text-[#71717A] ">Already have an account?</p>
           <p
             onClick={handlesign}
-            className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer"
-          >
+            className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer">
             Log in
           </p>
         </div>
