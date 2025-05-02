@@ -3,6 +3,7 @@ import { Settings } from "lucide-react";
 import { Truck } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export const Navi = () => {
   const router = useRouter();
@@ -43,19 +44,24 @@ export const Navi = () => {
       <div className="flex flex-col items-center gap-6 self-stretch w-[175px]">
         {l.map((g) => {
           return (
-            <button
-              key={g.name}
-              onClick={() => {
-                handleon(g.path);
-              }}
-              className={`cursor-pointer flex h-10 py-2 px-6 items-center gap-[10px] self-stretch rounded-full ${
-                pathname === `/${g.path}`
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              }`}>
-              {g.icon}
-              <p className=" text-[14px] font-medium">{g.name}</p>
-            </button>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer w-full"
+              key={g.name}>
+              <button
+                onClick={() => {
+                  handleon(g.path);
+                }}
+                className={`cursor-pointer w-[160px] flex h-10 py-2 px-6 items-center gap-[10px] self-stretch rounded-full ${
+                  pathname === `/${g.path}`
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                }`}>
+                {g.icon}
+                <p className=" text-[14px] font-medium">{g.name}</p>
+              </button>
+            </motion.div>
           );
         })}
       </div>

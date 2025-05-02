@@ -7,6 +7,7 @@ import { Length } from "../components/Length";
 import { Check } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { Minus } from "lucide-react";
+import { motion } from "framer-motion";
 
 import {
   Dialog,
@@ -153,38 +154,58 @@ export default function Home() {
             Dishes category
           </p>
           <div className="flex flex-wrap gap-2">
-            <button
-              onClick={ho}
-              className={`cursor-pointer flex h-[36px] py-2 px-4 items-center gap-2 rounded-full border-[1px] ${
-                isClicked && cat ? "border-[#e4e4e5]" : "border-[#ef4444]"
-              }  bg-[#FFFFFF]`}>
-              <p className="text-[#18181B] text-[14px] font-medium">Бүх хоол</p>
-              <div className="flex py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-[#18181B]">
-                <p className="tetx-[12px] text-[#FAFAFA]">{allfoods.length}</p>
-              </div>
-            </button>
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer">
+              <button
+                onClick={ho}
+                className={`cursor-pointer flex h-[36px] py-2 px-4 items-center gap-2 rounded-full border-[1px] ${
+                  isClicked && cat ? "border-[#e4e4e5]" : "border-[#ef4444]"
+                }  bg-[#FFFFFF]`}>
+                <p className="text-[#18181B] text-[14px] font-medium">
+                  Бүх хоол
+                </p>
+                <div className="flex py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-[#18181B]">
+                  <p className="tetx-[12px] text-[#FAFAFA]">
+                    {allfoods.length}
+                  </p>
+                </div>
+              </button>
+            </motion.div>
+
             {categories.map((el, index) => {
               return (
-                <button
+                <motion.div
                   key={el._id}
-                  onClick={() => handle(el, index)}
-                  className={`cursor-pointer flex h-[36px] py-2 px-4 items-center gap-2 rounded-full border-[1px] ${
-                    count === index && isClickedall == false
-                      ? "border-[#ef4444]"
-                      : "border-[#e4e4e5]"
-                  } bg-[#FFFFFF]`}>
-                  <p className="text-[#18181B] text-[14px] font-medium">
-                    {el.categoryName}
-                  </p>
-                  <Length id={el._id} />
-                </button>
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer">
+                  <button
+                    onClick={() => handle(el, index)}
+                    className={`cursor-pointer flex h-[36px] py-2 px-4 items-center gap-2 rounded-full border-[1px] ${
+                      count === index && isClickedall == false
+                        ? "border-[#ef4444]"
+                        : "border-[#e4e4e5]"
+                    } bg-[#FFFFFF]`}>
+                    <p className="text-[#18181B] text-[14px] font-medium">
+                      {el.categoryName}
+                    </p>
+                    <Length id={el._id} />
+                  </button>
+                </motion.div>
               );
             })}
             <Dialog>
               <DialogTrigger>
-                <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444]">
-                  <Plus />
-                </div>
+                <motion.div
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer">
+                  <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444]">
+                    <Plus />
+                  </div>
+                </motion.div>
               </DialogTrigger>
               <DialogContent>
                 <DialogTitle>
@@ -207,22 +228,32 @@ export default function Home() {
                       className="flex w-full py-2 px-3 items-center rounded-[6px] border-[1px] border-[#E4E4E7] bg-white"></input>
                   </div>
                   <DialogClose>
-                    <div
-                      onClick={handlecategory}
-                      className="cursor-pointer flex h-[40px] ml-[290px] mt-[24px] justify-contenet items-end gap-4 self-stretch rounded-md bg-[#18181B]">
-                      <p className="text-[#fff] text-[14px] py-2 px-4">
-                        Add Category
-                      </p>
-                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="cursor-pointer">
+                      <div
+                        onClick={handlecategory}
+                        className="cursor-pointer flex h-[40px] ml-[290px] mt-[24px] justify-contenet items-end gap-4 self-stretch rounded-md bg-[#18181B]">
+                        <p className="text-[#fff] text-[14px] py-2 px-4">
+                          Add Category
+                        </p>
+                      </div>
+                    </motion.div>
                   </DialogClose>
                 </div>
               </DialogContent>
             </Dialog>
             <Dialog>
               <DialogTrigger>
-                <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444]">
-                  <Minus />
-                </div>
+                <motion.div
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cursor-pointer">
+                  <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444]">
+                    <Minus />
+                  </div>
+                </motion.div>
               </DialogTrigger>
               <DialogContent>
                 <DialogTitle>
@@ -245,16 +276,21 @@ export default function Home() {
                       className="flex w-full py-2 px-3 items-center rounded-[6px] border-[1px] border-[#E4E4E7] bg-white"></input>
                   </div>
                   <DialogClose>
-                    <div
-                      onClick={() => {
-                        if (selectedCat) handledel(selectedCat._id);
-                        else alert("Category not found.");
-                      }}
-                      className="cursor-pointer w-[120px] flex h-[40px] ml-[290px] mt-[24px] justify-center items-end gap-4 self-stretch rounded-md bg-[#18181B]">
-                      <p className="text-[#fff] text-[14px] py-2 px-4 ">
-                        Delete
-                      </p>
-                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          if (selectedCat) handledel(selectedCat._id);
+                          else alert("Category not found.");
+                        }}
+                        className="cursor-pointer w-[120px] flex h-[40px] ml-[290px] mt-[24px] justify-center items-end gap-4 self-stretch rounded-md bg-[#18181B]">
+                        <p className="text-[#fff] text-[14px] py-2 px-4 ">
+                          Delete
+                        </p>
+                      </div>
+                    </motion.div>
                   </DialogClose>
                 </div>
               </DialogContent>

@@ -5,7 +5,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingCart } from "lucide-react";
@@ -42,8 +41,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({
         <motion.div
           whileHover={{ scale: 1.3 }}
           whileTap={{ scale: 0.95 }}
-          className="cursor-pointer w-full px-2"
-        >
+          className="cursor-pointer w-full px-2">
           <div className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full bg-[#F4F4F5] hover:bg-black text-black hover:text-white">
             <ShoppingCart className="size-4" />
           </div>
@@ -53,23 +51,20 @@ export const CartSheet: React.FC<CartSheetProps> = ({
       <AnimatePresence mode="popLayout">
         {open && (
           <motion.div
-            key="cart-sheet" // Added key to identify the component during transition
+            key="cart-sheet"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }} // Exit animation is handled here
-            transition={{ duration: 0 }}
-          >
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0 }}>
             <SheetContent
               side="right"
-              className="p-0 bg-transparent border-none"
-            >
+              className="p-0 bg-transparent border-none">
               <motion.div
                 initial={{ x: 300, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 300, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="bg-[#404040] overflow-scroll flex w-[535px] h-screen px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg"
-              >
+                className="bg-[#404040] overflow-scroll flex w-[535px] h-screen px-4 pb-4 flex-col items-start gap-6 rounded-tl-[20px] rounded-bl-[20px] shadow-lg">
                 <SheetHeader className="gap-8">
                   <SheetTitle className="text-white flex flex-col items-center gap-3">
                     <div className="flex w-full items-center gap-2">
@@ -84,17 +79,14 @@ export const CartSheet: React.FC<CartSheetProps> = ({
                           className="w-full flex p-1 items-center gap-2 rounded-full bg-white"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ duration: 0.5 }}
-                        >
+                          transition={{ duration: 0.5 }}>
                           <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="cursor-pointer"
-                          >
+                            className="cursor-pointer">
                             <TabsTrigger
                               value="Cart"
-                              className="cursor-pointer py-1 px-2 rounded-full text-black bg-white w-[220px]"
-                            >
+                              className="cursor-pointer py-1 px-2 rounded-full text-black bg-white w-[220px]">
                               Cart
                             </TabsTrigger>
                           </motion.div>
@@ -102,12 +94,10 @@ export const CartSheet: React.FC<CartSheetProps> = ({
                           <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="cursor-pointer"
-                          >
+                            className="cursor-pointer">
                             <TabsTrigger
                               value="Order"
-                              className="cursor-pointer py-1 px-2 rounded-full text-black bg-white w-[227px]"
-                            >
+                              className="cursor-pointer py-1 px-2 rounded-full text-black bg-white w-[227px]">
                               Orders
                             </TabsTrigger>
                           </motion.div>
@@ -134,12 +124,10 @@ export const CartSheet: React.FC<CartSheetProps> = ({
                             <motion.div
                               whileHover={{ scale: 1 }}
                               whileTap={{ scale: 0.95 }}
-                              className="cursor-pointer w-full"
-                            >
+                              className="cursor-pointer w-full">
                               <button
                                 onClick={handleClose}
-                                className="w-full cursor-pointer h-11 py-2 px-8 border border-[#EF4444] rounded-full text-[#EF4444] hover:bg-[#EF4444] hover:text-white"
-                              >
+                                className="w-full cursor-pointer h-11 py-2 px-8 border border-[#EF4444] rounded-full text-[#EF4444] hover:bg-[#EF4444] hover:text-white">
                                 Add food
                               </button>
                             </motion.div>
@@ -153,8 +141,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({
 
                       <TabsContent
                         value="Order"
-                        className="flex flex-col gap-8"
-                      >
+                        className="flex flex-col gap-8">
                         <div className="flex w-[479px] p-4 flex-col items-start gap-4 rounded-[20px] bg-white">
                           <div className="flex overflow-y-scroll max-h-[808px] flex-col gap-5">
                             {checked.length > 0 ? (
@@ -184,12 +171,10 @@ export const CartSheet: React.FC<CartSheetProps> = ({
                             <motion.div
                               whileHover={{ scale: 1 }}
                               whileTap={{ scale: 0.95 }}
-                              className="cursor-pointer w-full"
-                            >
+                              className="cursor-pointer w-full">
                               <button
                                 onClick={handleClose}
-                                className="w-full cursor-pointer h-11 py-2 px-8 border border-[#EF4444] rounded-full text-[#EF4444] hover:bg-[#EF4444] hover:text-white"
-                              >
+                                className="w-full cursor-pointer h-11 py-2 px-8 border border-[#EF4444] rounded-full text-[#EF4444] hover:bg-[#EF4444] hover:text-white">
                                 Add food
                               </button>
                             </motion.div>

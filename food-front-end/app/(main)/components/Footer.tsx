@@ -9,12 +9,25 @@ export const Footer = ({}) => {
   };
   return (
     <div className="w-full flex flex-col items-center h-[755px]  bg-[#18181B] gap-[76px]">
-      <div className="flex w-full h-[92px] py-7 px-[98px] items-center gap-[34px] bg-[#EF4444] text-white text-[20px] font-semibold mt-[60px] overflow-clip">
-        {o.map((val) => {
-          return <p key={val}>Fresh fast delivered </p>;
-        })}
+      <div className="marquee-container h-[92px] bg-[#EF4444] mt-[60px]">
+        <div className="marquee-content h-full items-center">
+          {[...Array(20)].map((_, idx) => (
+            <span
+              key={idx}
+              className="marquee-item text-white text-[20px] font-semibold mx-12">
+              Fresh fast delivered
+            </span>
+          ))}
+          {[...Array(20)].map((_, idx) => (
+            <span
+              key={`copy-${idx}`}
+              className="marquee-item text-white text-[20px] font-semibold mx-12">
+              Fresh fast delivered
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="flex w-[1264px] items-start gap-[220px]">
+      <div className="flex w-full px-10 justify-between items-start">
         <div className="flex flex-col items-center gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -38,6 +51,7 @@ export const Footer = ({}) => {
           </div>
         </div>
         <div className="flex items-start gap-[112px]">
+          {" "}
           <div className="flex w-[122px] flex-col items-start gap-4 text-[16px] text-white">
             <p className="text-[#71717A] ">YUMYUM</p>
             <p className="cursor-pointer" onClick={home}>
@@ -64,6 +78,8 @@ export const Footer = ({}) => {
               <p>Beverages</p>
             </div>
           </div>
+        </div>
+        <div className="flex items-start gap-[112px]">
           <div className="flex flex-col justify-end items-start gap-4">
             <p className="text-[#71717A] text-[16px]">FOLLOW US</p>
             <div className="flex py-[5px] justify-center items-start gap-4">
@@ -73,11 +89,11 @@ export const Footer = ({}) => {
           </div>
         </div>
       </div>
-      <div className="flex w-[1264px] py-[32px] items-center gap-12 border-t-[#848484] border-t-[1px] text-[#71717A] text-[14px]">
+      <div className="flex w-full py-[32px] justify-center items-center gap-12 border-t-[#848484] border-t-[1px] text-[#71717A] text-[14px]">
         <div className="flex items-end gap-1 ">
           <p>Copy right 2024</p>
           <p>©</p>
-          <p>Nomnom LLC</p>
+          <p>YumYum LLC</p>
         </div>
         <p>Privacy policy </p>
         <p>Terms and conditoin</p>

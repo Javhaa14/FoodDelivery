@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <div
       style={{ backgroundColor: "#F4F4F5" }}
-      className={`flex flex-row w-screen h-screen justify-center gap-2 bg-[#f4f4f5cc]`}>
+      className={`flex flex-row w-screen h-fit min-h-screen justify-center gap-2 bg-[#f4f4f5cc]`}>
       <Navi />
       {children}
     </div>

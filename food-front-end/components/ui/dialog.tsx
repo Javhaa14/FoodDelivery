@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X, XIcon } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -63,9 +64,15 @@ function DialogContent({
         {...props}>
         {children}
         <DialogPrimitive.Close className="ring-offset-background data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-          <div className="cursor-pointer flex size-[36px] justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white">
-            <X className="text-black" />
-          </div>
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer">
+            <div className="cursor-pointer flex size-[36px] justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white hover:bg-black text-black hover:text-white">
+              <X className="" />
+            </div>
+          </motion.div>
+
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>

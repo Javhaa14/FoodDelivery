@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { Check } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { motion } from "framer-motion";
 
 type Food = {
   _id: string;
@@ -44,7 +45,11 @@ export const AddNewfood = ({ id }: { id: string }) => {
       image: data.secure_url,
     }));
   };
-  const inputshandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inputshandler = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setNewfoods((prev) => ({
       ...prev,
@@ -111,33 +116,36 @@ export const AddNewfood = ({ id }: { id: string }) => {
             onChange={inputshandler}
             name="price"
             placeholder="Enter price..."
-            className="flex py-2 px-4 items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white shadow-sm"></input>
+            className="flex no-spinner  py-2 px-4 items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white shadow-sm"></input>
         </div>
       </div>
       <div className="flex h-[112px] flex-col items-start gap-2">
         <label className="flex text-start items-start text-[14px] font-medium">
           Ingredients
         </label>
-        <input
+        <textarea
           onChange={inputshandler}
           name="ingredients"
           placeholder="List ingredients..."
-          className="flex w-[412px] h-[90px] py-2 px-4 items-start self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white shadow-sm"></input>
+          className="flex w-[412px] h-[90px] resize-none  py-2 px-4 items-start self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white shadow-sm"></textarea>
       </div>
       <div className="flex h-[160px] flex-col items-start gap-2">
         <label className="flex items-start text-[14px] font-medium">
           Food image
         </label>
+
         <input
           onChange={imagehandler}
           type="file"
-          className="flex cursor-pointer  w-[412px] h-[138px] text-transparent p-4 flex-col justiify-center rounded-md border-[1px] border-[#2563eb33] bg-[#2563eb0d] items-center gap-2 absolute left-[30px] bottom-[130px] z-10"></input>
+          className="flex cursor-pointer  w-[412px] h-[138px] text-transparent p-4 flex-col justiify-center rounded-md border-[1px] border-[#2563eb33] bg-[#2563eb0d] hover:bg-[#c0d3ff0d] items-center gap-2 absolute left-[30px] bottom-[130px] z-10"></input>
+
         <div className="cursor-pointer flex w-[412px] h-[138px] p-4 flex-col justiify-center rounded-md border-[1px] border-[#2563eb33] border-dashed bg-[#2563eb0d] items-center gap-2 absolute left-[30px] bottom-[130px] z-0">
           <Image className="mt-4" />
           <p className="text-[#18181B] text-[14px]">
             Choose a file or drag & drop it here
           </p>
         </div>
+
         {inputval !== "" && (
           <div
             className=" w-[412px] h-[138px] rounded-md absolute z-50 left-[30px] bottom-[130px]"
@@ -146,20 +154,30 @@ export const AddNewfood = ({ id }: { id: string }) => {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}>
-            <div className="cursor-pointer flex size-9 justify-center items-center gap-2 absolute right-[8px] top-[10px] rounded-full border-[1px] border-[#E4E4E7] bg-white">
-              <X className="text-black size-4" onClick={on} />
-            </div>
+            <motion.div
+              whileHover={{ scale: 1 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer absolute right-2">
+              <div className="cursor-pointer flex size-9 justify-center items-center gap-2 absolute right-[8px] top-[10px] rounded-full border-[1px] border-[#E4E4E7]  bg-white hover:bg-black text-black hover:text-white">
+                <X className=" size-4" onClick={on} />
+              </div>
+            </motion.div>
           </div>
         )}
       </div>
       <div className="flex w-full justify-end pt-6 items-center self-stretch">
         <div className="flex cursor-pointer items-center gap-2">
           <DialogClose asChild>
-            <button
-              onClick={addFood}
-              className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md bg-[#18181B] text-white text-[14px] font-medium">
-              <p>Add Dish</p>
-            </button>
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer">
+              <button
+                onClick={addFood}
+                className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md bg-[#18181B] text-white text-[14px] font-medium">
+                <p>Add Dish</p>
+              </button>
+            </motion.div>
           </DialogClose>
         </div>
       </div>

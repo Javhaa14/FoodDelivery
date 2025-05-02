@@ -1,6 +1,6 @@
 "use client";
-import axios from "axios";
-import { useState } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Step4 = ({
   name,
@@ -30,15 +30,18 @@ export const Step4 = ({
           placeholder="Enter your email address"
           className={`flex px-3 py-2 items-center self-stretch rounded-md border-[1px] ${
             errmes !== "" ? "border-[#EF4444]" : "border-[#E4E4E7]"
-          } bg-white text-black`}
-        ></input>
+          } bg-white text-black`}></input>
         <p className="text-[#EF4444] text-[14px]">{errmes}</p>
-        <button
-          onClick={sendlink}
-          className="cursor-pointer flex w-full h-[36px] px-[32px] justify-center items-center rounded-md bg-black hover:bg-[#3f3f3f] text-white"
-        >
-          Send link
-        </button>
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer w-full">
+          <button
+            onClick={sendlink}
+            className="cursor-pointer flex w-full h-[36px] px-[32px] justify-center items-center rounded-md bg-black hover:bg-[#3f3f3f] text-white">
+            Send link
+          </button>
+        </motion.div>
       </div>
     </div>
   );

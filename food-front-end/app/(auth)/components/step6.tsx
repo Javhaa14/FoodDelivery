@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Step6 = ({ name, down }: { name: string; down: string }) => {
   const [pass, setPass] = useState("");
@@ -81,8 +82,7 @@ export const Step6 = ({ name, down }: { name: string; down: string }) => {
             placeholder="Password"
             className={`flex px-3 py-2 items-center self-stretch rounded-md border-[1px]  ${
               passmes !== "" ? "border-[#EF4444]" : "border-[#E4E4E7]"
-            } bg-white text-black  w-full`}
-          ></input>
+            } bg-white text-black  w-full`}></input>
         </div>
         <div className="flex w-[400px] h-[36px] items-start gap-2 self-stretch">
           <input
@@ -92,25 +92,28 @@ export const Step6 = ({ name, down }: { name: string; down: string }) => {
             placeholder="Confirm"
             className={`flex px-3 py-2 items-center self-stretch rounded-md border-[1px]  ${
               passmes !== "" ? "border-[#EF4444]" : "border-[#E4E4E7]"
-            } bg-white text-black  w-full`}
-          ></input>
+            } bg-white text-black  w-full`}></input>
         </div>
         <p className="text-[#EF4444] text-[14px] w-[400px] h-fit">{passmes}</p>
         <div className="flex items-center gap-2">
           <input
             onClick={show}
             type="checkbox"
-            className="size-4 rounded-sm border-[1px] border-black bg-white"
-          ></input>
+            className="size-4 rounded-sm border-[1px] border-black bg-white"></input>
 
           <p className="text-[#71717A] text-[14px]">Show password</p>
         </div>
-        <button
-          onClick={resetpass}
-          className="cursor-pointer flex w-full h-[36px] px-[32px] justify-center items-center rounded-md bg-black hover:bg-[#3f3f3f] text-white"
-        >
-          Create new password
-        </button>
+
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer">
+          <button
+            onClick={resetpass}
+            className="cursor-pointer flex w-full h-[36px] px-[32px] justify-center items-center rounded-md bg-black hover:bg-[#3f3f3f] text-white">
+            Create new password
+          </button>
+        </motion.div>
       </div>
     </div>
   );

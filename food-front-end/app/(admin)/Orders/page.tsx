@@ -8,6 +8,7 @@ import { Toaster, toast } from "sonner";
 import { Check } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
+import { motion } from "framer-motion";
 
 import {
   Dialog,
@@ -99,8 +100,7 @@ export default function Home() {
       setSelectedOrders([]);
       toast.custom((t) => (
         <div
-          className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
-        >
+          className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />
           <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
             Хүргэлтийн төлөв амжилттай өөрчлөгдсөн!
@@ -149,24 +149,28 @@ export default function Home() {
               </div>
               <Dialog>
                 <DialogTrigger asChild>
-                  <button
-                    disabled={selectedOrders.length === 0}
-                    onClick={(e) => {
-                      if (selectedOrders.length === 0) e.preventDefault();
-                    }}
-                    className={`cursor-pointer flex h-[36px] py-2 px-4 justify-center items-center gap-2 rounded-full transition-all ${
-                      selectedOrders.length === 0
-                        ? "bg-[#18181B]/20 text-white cursor-not-allowed"
-                        : "bg-[#18181B] text-white hover:bg-[#2c2c2e]"
-                    }`}
-                  >
-                    Change delivery state
-                    {selectedOrders.length > 0 && (
-                      <div className="flex py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-white text-black">
-                        {selectedOrders.length}
-                      </div>
-                    )}
-                  </button>
+                  <motion.div
+                    whileHover={{ scale: 1.07 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="cursor-pointer">
+                    <button
+                      disabled={selectedOrders.length === 0}
+                      onClick={(e) => {
+                        if (selectedOrders.length === 0) e.preventDefault();
+                      }}
+                      className={`cursor-pointer flex h-[36px] py-2 px-4 justify-center items-center gap-2 rounded-full transition-all ${
+                        selectedOrders.length === 0
+                          ? "bg-[#18181B]/20 text-white cursor-not-allowed"
+                          : "bg-[#18181B] text-white hover:bg-[#2c2c2e]"
+                      }`}>
+                      Change delivery state
+                      {selectedOrders.length > 0 && (
+                        <div className="flex py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-white text-black">
+                          {selectedOrders.length}
+                        </div>
+                      )}
+                    </button>
+                  </motion.div>
                 </DialogTrigger>
 
                 <DialogContent className="flex flex-col p-6 w-[364px] h-[200px] items-start self-stretch gap-[24px] rounded-xl bg-white">
@@ -177,27 +181,35 @@ export default function Home() {
                     <div className="flex items-start gap-4 ">
                       {state.map((v, i) => {
                         return (
-                          <div
-                            key={i}
-                            className={`w-[95px] h-[32px] cursor-pointer flex py-2 px-[10px] justify-center items-center gap-[10px] rounded-full transition-all ${
-                              selectedStatus === v.status
-                                ? "border-[1px] text-[#EF4444] bg-[#e11d481a] border-[#EF4444]"
-                                : "text-[#18181B] bg-[#F4F4F5] border-[0px]"
-                            }`}
-                            onClick={() => setSelectedStatus(v.status)}
-                          >
-                            {v.status}
-                          </div>
+                          <motion.div
+                            whileHover={{ scale: 1.07 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="cursor-pointer">
+                            <div
+                              key={i}
+                              className={`w-[95px] h-[32px] cursor-pointer flex py-2 px-[10px] justify-center items-center gap-[10px] rounded-full transition-all ${
+                                selectedStatus === v.status
+                                  ? "border-[1px] text-[#EF4444] bg-[#e11d481a] border-[#EF4444]"
+                                  : "text-[#18181B] bg-[#F4F4F5] border-[0px]"
+                              }`}
+                              onClick={() => setSelectedStatus(v.status)}>
+                              {v.status}
+                            </div>
+                          </motion.div>
                         );
                       })}
                     </div>
                     <DialogClose>
-                      <div
-                        onClick={handlestatus}
-                        className="cursor-pointer flex justify-center items-center gap-4 h-[36px] px-3 py-2 w-full rounded-full bg-[#18181B] text-[#FAFAFA]"
-                      >
-                        Save
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.07 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="cursor-pointer">
+                        <div
+                          onClick={handlestatus}
+                          className="cursor-pointer flex justify-center items-center gap-4 h-[36px] px-3 py-2 w-full rounded-full bg-[#18181B] text-[#FAFAFA]">
+                          Save
+                        </div>
+                      </motion.div>
                     </DialogClose>
                   </div>
                 </DialogContent>
@@ -212,8 +224,7 @@ export default function Home() {
                 }
                 onChange={handlecheck}
                 type="checkbox"
-                className="accent-[#09090B] cursor-pointer rounded-sm focus:ring-[#18181B]"
-              ></input>
+                className="accent-[#09090B] cursor-pointer rounded-sm focus:ring-[#18181B]"></input>
             </div>
             <div className="flex p-4 w-[56px] items-center gap-[10px] border-b-[1px] border-b-[#E4E4E7]">
               <p className="text-[#09090B] text-[14px]">№</p>
@@ -270,43 +281,54 @@ export default function Home() {
         <Toaster position="top-center" />
         <div className="flex px-2 justify-end items-center self-stretch">
           <div className="flex items-center gap-6 h-[32px] w-fit">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className={`cursor-pointer flex items-center justify-center p-1 rounded-full ${
-                currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              <ChevronLeft className="text-black " />
-            </button>
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className={`cursor-pointer flex items-center justify-center p-1 rounded-full ${
+                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}>
+                <ChevronLeft className="text-black " />
+              </button>
+            </motion.div>
 
             {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`cursor-pointer w-[32px] h-[32px] rounded-full text-sm flex items-center justify-center ${
-                  currentPage === i + 1
-                    ? "bg-black text-white"
-                    : "bg-white text-black border"
-                }`}
-              >
-                {i + 1}
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer"
+                key={i}>
+                <button
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`cursor-pointer w-[32px] h-[32px] rounded-full text-sm flex items-center justify-center ${
+                    currentPage === i + 1
+                      ? "bg-black text-white"
+                      : "bg-white text-black border"
+                  }`}>
+                  {i + 1}
+                </button>
+              </motion.div>
             ))}
-
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className={`cursor-pointer flex items-center justify-center p-1 rounded-full ${
-                currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              <ChevronRight className="text-black " />
-            </button>
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer">
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className={`cursor-pointer flex items-center justify-center p-1 rounded-full ${
+                  currentPage === totalPages
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}>
+                <ChevronRight className="text-black " />
+              </button>
+            </motion.div>
           </div>
         </div>
       </div>

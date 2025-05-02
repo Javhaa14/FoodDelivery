@@ -6,6 +6,8 @@ import { Trash } from "lucide-react";
 import { X } from "lucide-react";
 import { Image } from "lucide-react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
+
 import {
   Dialog,
   DialogContent,
@@ -88,7 +90,11 @@ export const List = ({
     fetchFoods();
   }, [id]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
     const fieldMap: Record<string, string> = {
@@ -139,7 +145,7 @@ export const List = ({
       type: "text",
       height: "h-[104px]",
       class:
-        "flex w-[288px] py-2 px-4 items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white ",
+        "flex w-[288px] py-2 px-4  resize-none items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white ",
       value: otherinputs.ingredients,
     },
     {
@@ -147,7 +153,7 @@ export const List = ({
       type: "number",
       height: "h-[60px]",
       class:
-        "flex w-[288px] py-2 px-4 items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white ",
+        "flex w-[288px] py-2 px-4 no-spinner items-center self-stretch rounded-md border-[1px] border-[#E4E4E7] bg-white ",
       value: otherinputs.price,
     },
     {
@@ -274,14 +280,19 @@ export const List = ({
       <div className="flex flex-wrap h-fit items-start gap-4 self-stretch">
         <Dialog>
           <DialogTrigger>
-            <div className="flex w-[271px] h-[241px] py-2 px-4 flex-col justify-center items-center gap-6 self-stretch rounded-[20px] border-[1px] border-[#EF4444] border-dashed">
-              <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444]">
-                <Plus />
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer">
+              <div className="flex w-[271px] h-[241px] py-2 px-4 flex-col justify-center items-center gap-6 self-stretch rounded-[20px] border-[1px] border-[#EF4444] border-dashed">
+                <div className="cursor-pointer flex size-10 justify-center items-center gap-2 rounded-full bg-[#EF4444] hover:bg-black">
+                  <Plus />
+                </div>
+                <p className="text-[#09090B] w-[154px] text-[14px] font-medium flex text-center">
+                  Add new Dish to Appetizers
+                </p>
               </div>
-              <p className="text-[#09090B] w-[154px] text-[14px] font-medium flex text-center">
-                Add new Dish to Appetizers
-              </p>
-            </div>
+            </motion.div>
           </DialogTrigger>
           <DialogContent className="flex flex-col w-[472px] h-[596px] justify-center items-center self-stretch gap-[1px]">
             <DialogTitle className="flex w-[472px] justify-start pl-6 absolute top-6">
@@ -295,20 +306,37 @@ export const List = ({
 
         {foods.map((el) => {
           return (
-            <div
-              key={el._id}
-              className="flex p-4 w-[271px] h-[255px] overflow-hidden flex-col items-start gap-5 self-stretch rounded-[20px] border-[1px] border-[#E4E4E7]">
-              <img
-                className="flex h-[129px] w-[238px] justify-end items-end gap-[10px] rounded-xl relative"
-                src={`${el.image}`}></img>
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              className="cursor-pointer"
+              key={el._id}>
               <Dialog>
-                <DialogTrigger className="absolute ml-[180px] mt-[80px]">
+                <DialogTrigger className="cursor-pointer">
                   <div
                     onClick={() => {
                       onclick(el);
                     }}
-                    className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full bg-white hover:bg-black text-red-500 hover:text-white">
-                    <Pen className=" size-4" />
+                    className="flex p-4 w-[271px] h-[255px] overflow-hidden flex-col items-start gap-5 self-stretch rounded-[20px] border-[1px] border-[#E4E4E7]">
+                    <img
+                      className="flex h-[129px] w-[238px] justify-end items-end gap-[10px] rounded-xl relative"
+                      src={`${el.image}`}></img>
+
+                    <div className="absolute ml-[180px] mt-[80px] cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full bg-white hover:bg-black text-red-500 hover:text-white">
+                      <Pen className=" size-4" />
+                    </div>
+
+                    <div className="flex flex-col items-start gap-2 self-stretch">
+                      <div className="flex justify-between items-center gap-[10px] self-stretch">
+                        <p className="text-[14px] text-[#EF4444] font-medium">
+                          {el.name}
+                        </p>
+                        <p className="text-[12px] text-[#09090B]">{el.price}</p>
+                      </div>
+                      <p className="text-[12px] text-[#09090B]">
+                        {el.ingredients}
+                      </p>
+                    </div>
                   </div>
                 </DialogTrigger>
                 <DialogContent className="flex flex-col w-[472px] h-[596px] justify-center items-center self-stretch gap-[1px]">
@@ -326,35 +354,54 @@ export const List = ({
                             <p className="text-[#71717A] text-[12px]">
                               {value.name}
                             </p>
-                            <input
-                              onChange={
-                                index === 4 ? imagehandler : handleInputChange
-                              }
-                              name={value.name}
-                              type={value.type}
-                              className={`${value.class}`}
-                              value={value.value}
-                            />
+                            {index !== 2 ? (
+                              <input
+                                onChange={
+                                  index === 4 ? imagehandler : handleInputChange
+                                }
+                                name={value.name}
+                                type={value.type}
+                                className={`${value.class}`}
+                                value={value.value}
+                              />
+                            ) : (
+                              <textarea
+                                name={value.name}
+                                value={value.value}
+                                className={`${value.class}`}
+                                onChange={handleInputChange}></textarea>
+                            )}
 
                             {index === 1 && (
                               <div className="flex w-[288px] h-9 py-2 px-4 justify-between items-center rounded-md border-[1px] border-[#e4e4e7] bg-white shadow-sm font-semibold">
                                 <div className="flex w-[116px] py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-[#F4F4F5]">
-                                  <p className="text-[#424262] text-[12px]">
+                                  <p className="text-[#424262] text-[12px] cursor-pointer">
                                     {changedcat}
                                   </p>
                                 </div>
-                                <ChevronDown
-                                  className={`${
-                                    clicked ? "hidden" : "flex"
-                                  } cursor-pointer`}
-                                  onClick={click}
-                                />
-                                <ChevronUp
-                                  className={`${
-                                    clicked ? "flex" : "hidden"
-                                  } cursor-pointer`}
-                                  onClick={click}
-                                />
+                                <motion.div
+                                  whileHover={{ scale: 1.3 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="cursor-pointer absolute ml-[230px]">
+                                  <ChevronDown
+                                    className={`${
+                                      clicked ? "hidden" : "flex"
+                                    } cursor-pointer hover:text-red-500`}
+                                    onClick={click}
+                                  />
+                                </motion.div>
+                                <motion.div
+                                  whileHover={{ scale: 1.3 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="cursor-pointer absolute  ml-[230px]">
+                                  <ChevronUp
+                                    className={`${
+                                      clicked ? "flex" : "hidden"
+                                    } cursor-pointer hover:text-red-500`}
+                                    onClick={click}
+                                  />
+                                </motion.div>
+
                                 <div
                                   className={`${
                                     clicked
@@ -363,16 +410,24 @@ export const List = ({
                                   } transition-all duration-300 ease-in-out overflow-scroll h-[396px] flex-col items-start rounded-md bg-white shadow-sm absolute z-50 top-[90%] left-[32%] p-4`}>
                                   {categories.map((val: Category) => {
                                     return (
-                                      <div
-                                        onClick={() => {
-                                          catchoice(val.categoryName, val._id);
-                                        }}
-                                        key={val._id}
-                                        className="cursor-pointer flex w-[116px] py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-[#F4F4F5] hover:bg-black text-[#424262] hover:text-white mt-4">
-                                        <p className=" text-[12px]">
-                                          {val.categoryName}
-                                        </p>
-                                      </div>
+                                      <motion.div
+                                        whileHover={{ scale: 1.07 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="cursor-pointer"
+                                        key={val._id}>
+                                        <div
+                                          onClick={() => {
+                                            catchoice(
+                                              val.categoryName,
+                                              val._id
+                                            );
+                                          }}
+                                          className="cursor-pointer flex w-[116px] py-[2px] px-[10px] items-start gap-[10px] rounded-full bg-[#F4F4F5] hover:bg-black text-[#424262] hover:text-white mt-4">
+                                          <p className=" text-[12px]">
+                                            {val.categoryName}
+                                          </p>
+                                        </div>
+                                      </motion.div>
                                     );
                                   })}
                                 </div>
@@ -380,7 +435,7 @@ export const List = ({
                             )}
 
                             {index == 4 && (
-                              <div className="cursor-pointer flex w-[288px] h-[138px] p-4 flex-col justiify-center rounded-md border-[1px] border-[#2563eb33] bg-[#2563eb0d] items-center gap-2 absolute z-[-1] left-[135px]">
+                              <div className="cursor-pointer flex w-[288px] h-[138px] p-4 flex-col justiify-center rounded-md border-[1px] border-[#2563eb33] bg-[#2563eb0d] hover:bg-[#c0d3ff0d] items-center gap-2 absolute z-[-1] left-[135px]">
                                 <Image className="mt-4" />
                                 <p className="text-[#18181B] text-[14px]">
                                   Choose a file or drag & drop it here
@@ -400,40 +455,45 @@ export const List = ({
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       }}>
-                      <div className="cursor-pointer flex size-9 justify-center items-center gap-2 absolute right-[8px] top-[10px] rounded-full border-[1px] border-[#E4E4E7] bg-white">
-                        <X className="text-black size-4" onClick={on} />
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="cursor-pointer absolute right-2">
+                        <div className="cursor-pointer flex size-9 justify-center items-center gap-2 absolute right-[8px] top-[10px] rounded-full border-[1px] border-[#E4E4E7] bg-white hover:bg-black text-black hover:text-white">
+                          <X className=" size-4" onClick={on} />
+                        </div>
+                      </motion.div>
                     </div>
                   )}
                   <div className="flex w-full justify-between pt-6 items-center self-stretch">
-                    <div
-                      onClick={() => {
-                        deleteFood(el._id);
-                      }}
-                      className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md border-[1px] border-[#ef444480] bg-white">
-                      <Trash className="text-[#ef444480] size-4" />
-                    </div>
-                    <div
-                      onClick={() => {
-                        updateFood(el._id);
-                      }}
-                      className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md bg-[#18181B] text-white text-[14px] font-medium">
-                      Save Changes
-                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.07 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          deleteFood(el._id);
+                        }}
+                        className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md border-[1px] border-[#ef444480] bg-white">
+                        <Trash className="text-[#ef444480] size-4" />
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.07 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="cursor-pointer">
+                      <div
+                        onClick={() => {
+                          updateFood(el._id);
+                        }}
+                        className="flex cursor-pointer h-10 py-2 px-4 justify-center items-center gap-2 rounded-md bg-[#18181B] text-white text-[14px] font-medium">
+                        Save Changes
+                      </div>
+                    </motion.div>
                   </div>
                 </DialogContent>
               </Dialog>
-
-              <div className="flex flex-col items-start gap-2 self-stretch">
-                <div className="flex justify-between items-center gap-[10px] self-stretch">
-                  <p className="text-[14px] text-[#EF4444] font-medium">
-                    {el.name}
-                  </p>
-                  <p className="text-[12px] text-[#09090B]">{el.price}</p>
-                </div>
-                <p className="text-[12px] text-[#09090B]">{el.ingredients}</p>
-              </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

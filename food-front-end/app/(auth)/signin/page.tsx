@@ -49,7 +49,11 @@ export default function Home() {
       const validationSchema = Yup.object({
         email: Yup.string()
           .email("Invalid email address")
-          .required("Email is required"),
+          .required("Email is required")
+          .test("includes-com-and-at", "Invalid email address", (value) => {
+            if (!value) return false;
+            return value.includes("@") && value.includes(".com");
+          }),
       });
       try {
         await validationSchema.validate({ email });
@@ -78,7 +82,7 @@ export default function Home() {
           .required("Password is required")
           .min(8, "Password must be at least 8 characters")
           .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/,
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&_-])[A-Za-z\d@$!%*?#&_-]{8,}$/,
             "Password is too weak. Use uppercase, lowercase, number, and special character."
           ),
       });
@@ -125,8 +129,7 @@ export default function Home() {
         {step == 2 && (
           <div
             onClick={goback}
-            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white"
-          >
+            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white">
             <IoIosArrowBack className="text-black" />
           </div>
         )}
@@ -154,12 +157,10 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer w-full"
-          >
+            className="cursor-pointer w-full">
             <button
               onClick={handle}
-              className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
-            >
+              className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]">
               Let's Go
             </button>
           </motion.div>
@@ -168,8 +169,7 @@ export default function Home() {
           <p className="text-[#71717A] ">Already have an account?</p>
           <p
             onClick={handlesign}
-            className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer"
-          >
+            className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer">
             Log in
           </p>
         </div>

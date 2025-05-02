@@ -1,14 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SheetClose } from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog";
 
 type Order = {
   foodId: string;
@@ -53,13 +47,11 @@ export const Checkout = ({
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="cursor-pointer w-full px-2"
-      >
+        className="cursor-pointer w-full px-2">
         <SheetClose asChild>
           <button
             onClick={onCheckoutClick}
-            className="cursor-pointer flex w-full h-11 py-2 px-8 justify-center items-center gap-2 rounded-full bg-[#EF4444] text-[#FAFAFA]"
-          >
+            className="cursor-pointer flex w-full h-11 py-2 px-8 justify-center items-center gap-2 rounded-full bg-[#EF4444] text-[#FAFAFA]">
             Checkout
           </button>
         </SheetClose>

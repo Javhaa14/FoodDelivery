@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export const Header = ({}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [mounted, setMounted] = useState(false); // to avoid hydration issue
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -33,8 +33,7 @@ export const Header = ({}) => {
           width="46"
           height="38"
           viewBox="0 0 46 38"
-          fill="none"
-        >
+          fill="none">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -60,14 +59,12 @@ export const Header = ({}) => {
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.95 }}
                 className="cursor-pointer w-[80px] h-[40px]"
-                key={v.path}
-              >
+                key={v.path}>
                 <button
                   onClick={() => {
                     handleon(v.path);
                   }}
-                  className={`cursor-pointer flex h-9 py-3 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}
-                >
+                  className={`cursor-pointer flex h-9 py-3 px-3 justify-center items-center gap-2 rounded-full ${v.color} brightness-100 hover:brightness-75`}>
                   {v.name}
                 </button>
               </motion.div>

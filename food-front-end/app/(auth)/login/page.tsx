@@ -116,12 +116,16 @@ export default function Home() {
     <div className="flex pb-[110px] w-full h-full justify-center items-center ">
       <div className="flex flex-col justify-center items-start gap-6 p-10">
         {step > 3 && (
-          <div
-            onClick={goback}
-            className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white"
-          >
-            <IoIosArrowBack className="text-black" />
-          </div>
+          <motion.div
+            whileHover={{ scale: 1 }}
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer w-full">
+            <div
+              onClick={goback}
+              className="cursor-pointer flex px-1 py-1 size-[36px] justify-center items-center gap-2 rounded-md border-[#E4E4E7] border-[1px] bg-white hover:bg-black text-black hover:text-white">
+              <IoIosArrowBack className="" />
+            </div>
+          </motion.div>
         )}
 
         {/* Step 3 */}
@@ -158,17 +162,14 @@ export default function Home() {
         <div
           className={`${
             step === 3 ? "flex" : "hidden"
-          } items-center gap-3 self-stretch`}
-        >
+          } items-center gap-3 self-stretch`}>
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer w-full"
-          >
+            className="cursor-pointer w-full">
             <button
               onClick={handleonclick}
-              className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]"
-            >
+              className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]">
               Let's Go
             </button>
           </motion.div>
@@ -179,8 +180,7 @@ export default function Home() {
             <p className="text-[#71717A]">Бүртгэлгүй юу?</p>
             <p
               onClick={handlesign}
-              className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer"
-            >
+              className="text-[#2563EB] hover:text-[#ff5151] cursor-pointer">
               Бүртгүүлэх
             </p>
           </div>

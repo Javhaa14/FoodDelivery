@@ -72,7 +72,37 @@
     --foreground: #ededed;
   }
 }
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
+.marquee-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  width: 200%;
+  position: absolute;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-item {
+  flex: 1;
+  white-space: nowrap;
+}
+/* Hide for Firefox */
+.no-spinner {
+  -moz-appearance: textfield;
+}
 body {
   background: var(--background);
   color: var(--foreground);
