@@ -185,7 +185,7 @@ export const Sh = () => {
         }
       );
 
-      const validatedData = res.data.map((order: any) => ({
+      const validatedData = res.data.map((order: Orders) => ({
         ...order,
         foodorderitems: order.foodorderitems || [],
       }));
@@ -221,7 +221,7 @@ export const Sh = () => {
             },
           }
         );
-        toast.custom((t) => (
+        toast.custom(() => (
           <div
             className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
             <Check className="size-4 text-white" />
@@ -231,7 +231,7 @@ export const Sh = () => {
           </div>
         ));
       } else {
-        toast.custom((t) => (
+        toast.custom(() => (
           <div
             className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
             <X className="size-4 text-white" />
