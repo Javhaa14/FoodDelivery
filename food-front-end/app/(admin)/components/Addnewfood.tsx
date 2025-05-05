@@ -66,7 +66,7 @@ export const AddNewfood = ({ id }: { id: string }) => {
       .post(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/food`, dataToSend)
       .then((response) => {
         console.log("✅ Success:", response.data.message);
-        toast.custom((t) => (
+        toast.custom(() => (
           <div
             className={`w-[400px] top-[-20%] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all`}>
             <Check className="size-4 text-white" />

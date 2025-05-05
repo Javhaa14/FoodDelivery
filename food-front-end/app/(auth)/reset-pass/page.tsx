@@ -1,7 +1,6 @@
 "use client";
 
 import { Step6 } from "../components/step6";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const blah = {
