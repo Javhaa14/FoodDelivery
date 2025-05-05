@@ -10,8 +10,8 @@ export const Step3 = ({
 }: {
   name: string;
   down: string;
-  input: any;
-  inputpas: any;
+  input: React.ChangeEventHandler<HTMLInputElement>;
+  inputpas: React.ChangeEventHandler<HTMLInputElement>;
   email: string;
   pass: string;
   err: string;
@@ -48,8 +48,7 @@ export const Step3 = ({
         <p className="text-[#EF4444] text-[14px]">{err}</p>
         <p
           onClick={forgot}
-          className="text-[#18181B] hover:text-red-500 text-[14px] underline decoration-solid cursor-pointer"
-        >
+          className="text-[#18181B] hover:text-red-500 text-[14px] underline decoration-solid cursor-pointer">
           Нууц үгээ мартсан уу?
         </p>
       </div>

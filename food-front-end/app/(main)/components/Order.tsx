@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { Plus } from "lucide-react";
 import { Minus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 type Food = {
   _id: string;
@@ -40,9 +40,8 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
     setQuan(quan + 1);
     const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
     const existingIndex = storedOrders.findIndex((o: Order) => o.foodId === id);
-    let updatedOrders;
     storedOrders[existingIndex].quantity += 1;
-    updatedOrders = [...storedOrders];
+    const updatedOrders = [...storedOrders];
     localStorage.setItem("orders", JSON.stringify(updatedOrders));
     const currentCount = parseInt(localStorage.getItem("cartCount") || "0", 10);
     localStorage.setItem("cartCount", (currentCount + 1).toString());
@@ -56,9 +55,8 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
       const existingIndex = storedOrders.findIndex(
         (o: Order) => o.foodId === id
       );
-      let updatedOrders;
       storedOrders[existingIndex].quantity -= 1;
-      updatedOrders = [...storedOrders];
+      const updatedOrders = [...storedOrders];
       localStorage.setItem("orders", JSON.stringify(updatedOrders));
       const currentCount = parseInt(
         localStorage.getItem("cartCount") || "0",
@@ -79,7 +77,7 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
     );
 
     storedOrders.splice(existingIndex, 1);
-    let updatedOrders = storedOrders;
+    const updatedOrders = [...storedOrders];
     localStorage.setItem("orders", JSON.stringify(updatedOrders));
 
     window.dispatchEvent(new Event("cartUpdated"));
@@ -109,13 +107,11 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
             <motion.div
               whileHover={{ scale: 1 }}
               whileTap={{ scale: 0.95 }}
-              className="cursor-pointer"
-            >
+              className="cursor-pointer">
               {" "}
               <button
                 onClick={handledeleteorder}
-                className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full border-[1px] border-[#EF4444] hover:bg-[#EF4444] text-[#EF4444] hover:text-white"
-              >
+                className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full border-[1px] border-[#EF4444] hover:bg-[#EF4444] text-[#EF4444] hover:text-white">
                 <X className="size-4" />
               </button>
             </motion.div>
@@ -125,16 +121,14 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
               <motion.div
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer"
-              >
+                className="cursor-pointer">
                 <div
                   className={`${
                     quan <= 1
                       ? "opacity-[0.2] cursor-no-drop"
                       : "cursor-pointer "
                   } flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white`}
-                  onClick={handleDecrement}
-                >
+                  onClick={handleDecrement}>
                   <Minus className="size-4" />
                 </div>
               </motion.div>
@@ -143,12 +137,10 @@ export const Order = ({ id, quantity }: { id: string; quantity: number }) => {
               <motion.div
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer"
-              >
+                className="cursor-pointer">
                 <div
                   className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white"
-                  onClick={handleIncrement}
-                >
+                  onClick={handleIncrement}>
                   <Plus className="size-4" />
                 </div>
               </motion.div>

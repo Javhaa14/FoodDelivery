@@ -1,11 +1,10 @@
 "use client";
-import Image from "next/image";
 import { IoIosArrowBack } from "react-icons/io";
 import { Step1 } from "../components/step1";
 import { Step2 } from "../components/step2";
 import { useState } from "react";
 import axios from "axios";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -59,17 +58,20 @@ export default function Home() {
         await validationSchema.validate({ email });
         setErrmes("");
         try {
-          const response = await axios.post(
+          await axios.post(
             `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user/check`,
             {
               email: email,
             }
           );
           setStep(2);
-        } catch (error: any) {
-          setErrmes(
-            error.response ? error.response.data.message : "Network Error"
-          );
+        } catch (error: unknown) {
+          if (axios.isAxiosError(error) && error.response) {
+            setErrmes(error.response.data.message);
+          } else {
+            setErrmes("Network Error");
+            console.error("Unexpected error:", error);
+          }
         }
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -92,7 +94,7 @@ export default function Home() {
         if (pass == passconfirm) {
           setPassmes("");
           try {
-            const response = await axios.post(
+            await axios.post(
               `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user`,
               {
                 email: email,
@@ -102,8 +104,8 @@ export default function Home() {
                 isVerified: true,
               }
             );
-          } catch (err: any) {
-            console.log(err.message);
+          } catch (err: unknown) {
+            console.log(err);
           }
           router.push("/login");
         } else {
@@ -161,7 +163,7 @@ export default function Home() {
             <button
               onClick={handle}
               className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]">
-              Let's Go
+              Let&apos;s Go
             </button>
           </motion.div>
         </div>

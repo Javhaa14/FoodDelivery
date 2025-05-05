@@ -1,12 +1,9 @@
 "use client";
 
 import { Step6 } from "../components/step6";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   const blah = {
     name: "Create new password",
     down: "Set a new password with a combination of letters and numbers for better security.",

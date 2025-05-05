@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 
 export const Footer = ({}) => {
-  const o = [1, 2, 3, 4, 5];
   const router = useRouter();
   const home = () => {
     router.push("/");

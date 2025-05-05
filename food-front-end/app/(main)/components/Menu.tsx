@@ -39,6 +39,7 @@ export const Menu = ({
   const [foods, setFoods] = useState<Food[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const isLoggedIn = Cookies.get("Loggedin") === "true";
+  console.log(orders);
 
   const fetchFoods = async () => {
     const res = await axios.get(
@@ -80,7 +81,7 @@ export const Menu = ({
         10
       );
       localStorage.setItem("cartCount", (currentCount + 1).toString());
-      toast.custom((t) => (
+      toast.custom(() => (
         <div
           className={`w-[320px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />
@@ -91,7 +92,7 @@ export const Menu = ({
       ));
       window.dispatchEvent(new Event("cartUpdated"));
     } else {
-      toast.custom((t) => (
+      toast.custom(() => (
         <div
           className={`max-w-[320px] w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />

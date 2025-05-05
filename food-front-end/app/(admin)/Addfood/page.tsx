@@ -70,9 +70,9 @@ export default function Home() {
     }
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/category`, newcat)
-      .then((response) => {
+      .then(() => {
         fetchCategories();
-        toast.custom((t) => (
+        toast.custom(() => (
           <div
             className={`w-[400px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all`}>
             <Check className="size-4 text-white" />
@@ -94,7 +94,7 @@ export default function Home() {
       .delete(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/category`, {
         data: { id },
       })
-      .then((response) => {
+      .then(() => {
         fetchCategories();
         toast.custom(() => (
           <div className="w-[400px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all">
@@ -182,6 +182,7 @@ export default function Home() {
                   whileTap={{ scale: 0.95 }}
                   className="cursor-pointer">
                   <button
+                    key={el._id}
                     onClick={() => handle(el, index)}
                     className={`cursor-pointer flex h-[36px] py-2 px-4 items-center gap-2 rounded-full border-[1px] ${
                       count === index && isClickedall == false

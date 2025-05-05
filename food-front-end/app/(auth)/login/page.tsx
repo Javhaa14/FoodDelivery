@@ -66,9 +66,11 @@ export default function Home() {
         localStorage.setItem("token", response.data.token);
         Cookies.set("Loggedin", "true", { expires: 7 });
         router.push("/");
-      } catch (error: any) {
-        if (error.response) {
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
           setErrmes(error.response.data.message);
+        } else {
+          console.error("Unexpected error:", error);
         }
       }
     }
@@ -86,17 +88,18 @@ export default function Home() {
 
   const sendlink = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user/check`,
         {
           email: input,
         }
       );
       setExistmes("Хэрэглэгч байхгүй байна");
-      console.log(errmes);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      console.log(error);
+
       try {
-        const res = await axios.post(
+        await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/login/mail`,
           {
             email: input,
@@ -170,7 +173,7 @@ export default function Home() {
             <button
               onClick={handleonclick}
               className="cursor-pointer flex w-[352px] h-[36px] px-[32px] justify-center items-center gap-2 rounded-md  bg-black hover:bg-[#3f3f3f] text-[#FAFAFA]">
-              Let's Go
+              Let&apos;s Go
             </button>
           </motion.div>
         </div>

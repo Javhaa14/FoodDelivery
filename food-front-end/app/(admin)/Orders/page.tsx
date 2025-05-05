@@ -98,7 +98,7 @@ export default function Home() {
       );
       setOrders(res.data);
       setSelectedOrders([]);
-      toast.custom((t) => (
+      toast.custom(() => (
         <div
           className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />
@@ -182,6 +182,7 @@ export default function Home() {
                       {state.map((v, i) => {
                         return (
                           <motion.div
+                            key={i}
                             whileHover={{ scale: 1.07 }}
                             whileTap={{ scale: 0.95 }}
                             className="cursor-pointer">

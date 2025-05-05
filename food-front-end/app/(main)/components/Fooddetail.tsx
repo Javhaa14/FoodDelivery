@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Toaster, toast } from "sonner";
 import { Check } from "lucide-react";
 import Cookies from "js-cookie";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface FoodcardProps {
   name: string;
@@ -14,6 +14,11 @@ interface FoodcardProps {
   image: string;
   id: string;
 }
+type StoredOrder = {
+  foodId: string;
+  price: number;
+  quantity: number;
+};
 
 export const Fooddetail = ({
   name,
@@ -40,10 +45,10 @@ export const Fooddetail = ({
 
   const addOrder = (foodId: string, price: number) => {
     if (isLoggedIn == true) {
-      const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]");
-      const existingIndex = storedOrders.findIndex(
-        (o: any) => o.foodId === foodId
+      const storedOrders: StoredOrder[] = JSON.parse(
+        localStorage.getItem("orders") || "[]"
       );
+      const existingIndex = storedOrders.findIndex((o) => o.foodId === foodId);
 
       let updatedOrders;
       if (existingIndex !== -1) {
@@ -63,10 +68,9 @@ export const Fooddetail = ({
         10
       );
       localStorage.setItem("cartCount", (currentCount + quantity).toString());
-      toast.custom((t) => (
+      toast.custom(() => (
         <div
-          className={`w-[320px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}
-        >
+          className={`w-[320px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />
           <span className="text-[16px] font-medium text-[#FAFAFA]">
             Food is being added to the cart!
@@ -75,10 +79,9 @@ export const Fooddetail = ({
       ));
       window.dispatchEvent(new Event("cartUpdated"));
     } else {
-      toast.custom((t) => (
+      toast.custom(() => (
         <div
-          className={`max-w-[320px] w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}
-        >
+          className={`max-w-[320px] w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-4 transition-all border-[1px] border-white`}>
           <Check className="size-4 text-white" />
           <span className="text-[16px] font-medium text-[#FAFAFA]">
             Please Login First!
@@ -118,16 +121,14 @@ export const Fooddetail = ({
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className="cursor-pointer"
-                >
+                  className="cursor-pointer">
                   {" "}
                   <div
                     className={`${
                       quantity <= 1
                         ? "opacity-[0.2] cursor-no-drop"
                         : "cursor-pointer"
-                    } flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white hover:bg-black hover:text-white`}
-                  >
+                    } flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white hover:bg-black hover:text-white`}>
                     <Minus onClick={hasah} className="size-4" />
                   </div>{" "}
                 </motion.div>
@@ -135,8 +136,7 @@ export const Fooddetail = ({
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className="cursor-pointer"
-                >
+                  className="cursor-pointer">
                   <div className="cursor-pointer flex size-11 justify-center items-center gap-2 rounded-full border-[1px] border-[#E4E4E7] bg-white hover:bg-black hover:text-white">
                     <Plus onClick={nemeh} className="size-4" />
                   </div>
@@ -147,8 +147,7 @@ export const Fooddetail = ({
               <motion.div
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer"
-              >
+                className="cursor-pointer">
                 <button
                   onClick={() => {
                     addOrder(
@@ -156,8 +155,7 @@ export const Fooddetail = ({
                       typeof price === "string" ? parseFloat(price) : price
                     );
                   }}
-                  className="cursor-pointer w-[373px] flex h-[44px] py-2 px-[32px] justify-center items-center gap-2 self-stretch rounded-full bg-[#18181B] hover:bg-[#EF4444]"
-                >
+                  className="cursor-pointer w-[373px] flex h-[44px] py-2 px-[32px] justify-center items-center gap-2 self-stretch rounded-full bg-[#18181B] hover:bg-[#EF4444]">
                   Add to cart
                 </button>{" "}
               </motion.div>

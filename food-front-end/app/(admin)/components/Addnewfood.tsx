@@ -1,9 +1,9 @@
 "use client";
 import axios from "axios";
 import { Image } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { Check } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { motion } from "framer-motion";

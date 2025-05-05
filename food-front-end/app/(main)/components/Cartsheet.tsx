@@ -13,12 +13,53 @@ import { Cartempty } from "./Cartempty";
 import { Order } from "./Order";
 import { Checkout } from "./Checkout";
 import { Userorder } from "./Userorder";
+type Orders = {
+  _id: string;
+  user: {
+    _id: string;
+    email: string;
+    password: string;
+    phoneNumber: string;
+    address: string;
+    isVerified: boolean;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+  totalPrice: number;
+  foodorderitems: {
+    food: {
+      _id: string;
+      name: string;
+      ingredients: string;
+      image: string;
+      price: number;
+      category: string[];
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    price: number;
+    quantity: number;
+    _id: string;
+  }[];
+  status: "Pending" | "Delivered" | "Cancelled";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
 
+type CartItem = {
+  foodId: string;
+  price: number;
+  quantity: number;
+};
 interface CartSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  orders: any[];
-  checked: any[];
+  orders: CartItem[];
+  checked: Orders[];
   input: string;
   handleCheckoutClick: () => void;
 }

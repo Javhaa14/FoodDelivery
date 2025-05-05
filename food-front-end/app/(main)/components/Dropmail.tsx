@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const Dropmail = ({
   mail,
@@ -13,12 +13,10 @@ export const Dropmail = ({
       <motion.div
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 1 }}
-        className="cursor-pointer w-full"
-      >
+        className="cursor-pointer w-full">
         <button
           onClick={onclick}
-          className="cursor-pointer ml-[30px] flex h-[36px] py-2 px-4 justify-center items-center gap-2 rounded-full bg-[#F4F4F5] hover:bg-[#EF4444] text-[#09090B] hover:text-white"
-        >
+          className="cursor-pointer ml-[30px] flex h-[36px] py-2 px-4 justify-center items-center gap-2 rounded-full bg-[#F4F4F5] hover:bg-[#EF4444] text-[#09090B] hover:text-white">
           Sign out
         </button>
       </motion.div>

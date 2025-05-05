@@ -297,7 +297,7 @@ export const List = ({
           <DialogContent className="flex flex-col w-[472px] h-[596px] justify-center items-center self-stretch gap-[1px]">
             <DialogTitle className="flex w-[472px] justify-start pl-6 absolute top-6">
               <p className="text-[#09090B] text-[18px] font-semibold">
-                Add new Dish to "{categoryname}"
+                Add new Dish to {categoryname}
               </p>
             </DialogTitle>
             <AddNewfood id={id} />

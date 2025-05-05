@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Sh } from "./Shee";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const Header = ({}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
