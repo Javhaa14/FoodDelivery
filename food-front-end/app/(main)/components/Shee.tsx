@@ -164,6 +164,7 @@ export const Sh = () => {
       localStorage.removeItem("cartCount");
     } catch (error) {
       toast.error("Order failed. Please try again.");
+      console.error(error);
     }
   };
 
