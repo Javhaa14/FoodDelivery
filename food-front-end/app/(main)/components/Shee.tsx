@@ -11,7 +11,7 @@ import {
 
 import { motion } from "framer-motion";
 
-import { Check, MapPin } from "lucide-react";
+import { Check, MapPin, Search } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { User } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ export const Sh = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [input, setInput] = useState("");
   const [address, setAddress] = useState("");
-
+  const [search, setSearch] = useState(false);
   const [checked, setChecked] = useState<Orders[]>([]);
   const [email, setEmail] = useState("");
   const textchange = (
@@ -139,7 +139,8 @@ export const Sh = () => {
     if (transformedOrders.length === 0) {
       toast.custom(() => (
         <div
-          className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+          className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+        >
           <X className="size-4 text-white" />
           <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
             Таны сагс хоосон байна!
@@ -203,6 +204,9 @@ export const Sh = () => {
   const o = () => {
     setInput("");
   };
+  const s = () => {
+    setSearch(!search);
+  };
   const z = async () => {
     setInput(address);
 
@@ -223,7 +227,8 @@ export const Sh = () => {
         );
         toast.custom(() => (
           <div
-            className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            className={`w-[300px] p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+          >
             <Check className="size-4 text-white" />
             <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
               Хүргэлтийн хаяг амжилттай бүртгэгдлээ!
@@ -233,7 +238,8 @@ export const Sh = () => {
       } else {
         toast.custom(() => (
           <div
-            className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}>
+            className={`w-fit p-4 rounded-xl shadow-lg bg-[#18181b] text-white flex items-center gap-2 transition-all border-[1px] border-white`}
+          >
             <X className="size-4 text-white" />
             <span className="text-[16px] font-medium text-center text-[#FAFAFA]">
               Хүргэлтийн хаягаа оруулна уу?
@@ -266,10 +272,20 @@ export const Sh = () => {
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer w-full">
+            className="cursor-pointer w-full"
+          >
             <div className="w-[251px] h-[36px] cursor-pointer flex py-2 px-3 justify-center items-center gap-1 rounded-full bg-white">
               <MapPin className="text-[#EF4444] size-5" />
-              {input !== "" ? (
+
+              {input == "" ? (
+                <div className="flex w-[200px] justify-center items-center gap-2 relative">
+                  <p className="text-[#EF4444] text-[12px]">
+                    Delivery address:
+                  </p>
+                  <p className="text-[#71717A] text-[12px]">Add Location</p>
+                  <ChevronRight className="text-[#71717A] size-5" />
+                </div>
+              ) : (
                 <div className="flex  w-[200px] text-black items-center">
                   <input
                     value={input}
@@ -279,25 +295,39 @@ export const Sh = () => {
                   <motion.div
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.95 }}
-                    className="cursor-pointer">
+                    className="cursor-pointer"
+                  >
                     <X
                       onClick={o}
                       className="text-[#71717A] hover:text-red-500 size-5"
                     />
                   </motion.div>
                 </div>
-              ) : (
-                <div className="flex w-[200px] justify-center items-center gap-2">
-                  <p className="text-[#EF4444] text-[12px]">
-                    Delivery address:
-                  </p>
-                  <p className="text-[#71717A] text-[12px]">Add Location</p>
-                  <ChevronRight className="text-[#71717A] size-5" />
-                </div>
               )}
             </div>
           </motion.div>
         </DialogTrigger>
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer"
+        >
+          <Search
+            onClick={s}
+            className="text-white hover:text-red-500 size-5"
+          />
+        </motion.div>
+        {search && (
+          <div className="text-black flex absolute top-4 w-[251px] h-[36px] cursor-pointer py-2 px-3 justify-center items-center gap-1 rounded-full bg-white">
+            <MapPin className="text-[#EF4444] size-5" />
+            <input
+              // value={input}
+              // onChange={textchange}
+              className="cursor-pointer w-full focus:outline-none focus:ring-0 focus:border-transparent"
+            />
+          </div>
+        )}
+
         <DialogContent className="flex flex-col p-6 w-[480px] h-[308px] justify-center items-start self-stretch gap-[24px] rounded-xl bg-white">
           <DialogTitle className="flex w-full justify-start absolute top-5 text-[#09090B] text-[18px] font-semibold">
             Delivery address
@@ -315,7 +345,8 @@ export const Sh = () => {
               <motion.div
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer">
+                className="cursor-pointer"
+              >
                 <button className="cursor-pointer flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-white text-[#09090B] hover:bg-[#dfdfdf]">
                   Cancel
                 </button>
@@ -325,10 +356,12 @@ export const Sh = () => {
               <motion.div
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer">
+                className="cursor-pointer"
+              >
                 <button
                   onClick={z}
-                  className=" cursor-pointer ml-4 flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-[#18181B] text-white hover:bg-[#4a4a4a]">
+                  className=" cursor-pointer ml-4 flex h-10 py-2 px-4 justify-center items-center rounded-md border-[1px] border-[#E4E4E7] bg-[#18181B] text-white hover:bg-[#4a4a4a]"
+                >
                   Deliver Here
                 </button>
               </motion.div>
@@ -350,7 +383,8 @@ export const Sh = () => {
         <DialogTrigger></DialogTrigger>
         <DialogContent
           className="flex flex-col p-6 w-[480px] h-[228px] justify-center items-center self-stretch gap-[24px] rounded-xl bg-white"
-          onInteractOutside={(e) => e.preventDefault()}>
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogTitle className="text-[#09090B] text-center text-[18px] font-semibold">
             Таны захиалга амжилттай!
           </DialogTitle>
@@ -375,7 +409,8 @@ export const Sh = () => {
       <motion.div
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.95 }}
-        className="cursor-pointer w-full">
+        className="cursor-pointer w-full"
+      >
         <div className="relative group h-[35px]">
           <div className="cursor-pointer flex size-9 justify-center items-center gap-2 rounded-full bg-[#EF4444] hover:bg-[#000000] text-white ">
             <User className="size-4" />
@@ -397,7 +432,8 @@ export const Sh = () => {
           }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="absolute top-2 right-37 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold z-50">
+          className="absolute top-2 right-37 w-5 h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold z-50"
+        >
           {cartCount}
         </motion.div>
       )}
